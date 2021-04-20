@@ -10,11 +10,9 @@ componentDidMount() {
   console.log('mounted!')
   }
   render(){
-    const { product } = this.props
-    console.log(product);
     return (
       <div>
-        Look! its {product.name}
+        Look! its {this.props.selectedProduct.name}
       </div>
     )
   }
