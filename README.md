@@ -1,6 +1,5 @@
 # FS-App-Template
-// "set JWT=shh&&nodemon server -e html,js,scss --ignore public --ignore client",
-// "webpack -w",
+
 ## Setup
 
 To use this as boilerplate, you'll need to take the following steps:
