@@ -1,14 +1,14 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
+const Sequelize = require("sequelize");
+const db = require("../db");
 
-const Order = db.define('order', {
+const Order = db.define("order", {
   orderTotal: {
-    type: Sequelize.DECIMAL(10, 2),
+    type: Sequelize.INTEGER,
   },
   isCart: {
     type: Sequelize.BOOLEAN,
-    defaultValue: true
-  }
+    defaultValue: true,
+  },
 });
 
 module.exports = Order;
