@@ -20,7 +20,14 @@ async function seed() {
     User.create({ username: 'robert', password: '123', userType: 'admin' }),
   ]);
 
-  const orders = await Promise.all([Order.create(), Order.create()]);
+  //Creating Orders
+  const orders = await Promise.all([
+    Order.create(),
+    Order.create(),
+    Order.create(),
+  ]);
+
+  //Creating Snakes
   const products = await Promise.all([
     Product.create({
       name: 'python',
@@ -28,9 +35,31 @@ async function seed() {
       price: 20.0,
       quantity: 5,
     }),
+    Product.create({
+      name: 'monty',
+      description: '-the python, get it?',
+      price: 15.99,
+      quantity: 1969
+    }),
+    Product.create({
+      name: 'king cobra',
+      description: 'the king of all cobras',
+      price: 99.99,
+      quantity: 1
+    }),
+    Product.create({
+      name: 'grass snake',
+      description: 'no venom, just vibes',
+      price: 4.20,
+      quantity: 7000
+    }),
   ]);
   await orders[0].addProduct(products[0]);
-  await orders[1].addProduct(products[0]);
+  await orders[0].addProduct(products[1]);
+  await orders[0].addProduct(products[3]);
+  await orders[1].addProduct(products[1]);
+  await orders[1].addProduct(products[2]);
+  await orders[2].addProduct(products[3]);
 
   // console.log(orders[0].__proto__);
   console.log(`seeded ${users.length} users`);
