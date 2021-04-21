@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { fetchProduct } from '../store/singleProduct'
+import Cart from './Cart'
 
 class SingleProduct extends React.Component {
 
@@ -13,6 +14,7 @@ componentDidMount() {
     return (
       <div>
         Look! its {this.props.selectedProduct.name}
+        <Cart />
       </div>
     )
   }
