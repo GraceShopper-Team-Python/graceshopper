@@ -1,15 +1,15 @@
-import axios from "axios";
+import axios from 'axios';
 
-const initialState = [];
+const initialState = {};
 
 // action types
-const SET_CART = "SET_CART";
+const SET_CART = 'SET_CART';
 
 //action creators
-export const setCart = (cart) => {
+export const setCart = (cartObj) => {
   return {
     type: SET_CART,
-    cart,
+    cartObj,
   };
 };
 
@@ -20,7 +20,13 @@ export const fetchCart = (userId) => {
       if (userId) {
         // /api/cart/${userId} should send array of product objects
         const { data: cart } = await axios.get(`/api/cart/${userId}`);
-        if (cart) dispatch(setCart(cart));
+        if (cart) {
+          let cartObj = {};
+          cart.map(
+            (product) => (cartObj[product.productId] = product.quantity)
+          );
+          dispatch(setCart(cartObj));
+        }
       }
     } catch (err) {
       throw err;
@@ -32,7 +38,7 @@ export const fetchCart = (userId) => {
 export default function cartsReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CART:
-      return action.cart;
+      return action.cartObj;
     default:
       return state;
   }

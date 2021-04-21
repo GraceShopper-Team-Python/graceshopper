@@ -1,18 +1,18 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
+const Sequelize = require('sequelize');
+const db = require('../db');
 
-const Product = db.define("product", {
+const Product = db.define('product', {
   name: {
     type: Sequelize.STRING,
     allowNull: false,
   },
   description: {
     type: Sequelize.TEXT,
-    defaultValue: "Ssssssnakes",
+    defaultValue: 'Ssssssnakes',
   },
   imageUrl: {
     type: Sequelize.TEXT,
-    defaultValue: "https://freepngimg.com/thumb/categories/1402.png",
+    defaultValue: 'https://freepngimg.com/thumb/categories/1402.png',
   },
   price: {
     type: Sequelize.INTEGER,
@@ -21,7 +21,7 @@ const Product = db.define("product", {
       min: 0,
     },
   },
-  quantity: {
+  stock: {
     type: Sequelize.INTEGER,
     validate: {
       min: 0,

@@ -1,18 +1,28 @@
-const router = require("express").Router();
+const router = require('express').Router();
 const {
-  models: { Order },
-} = require("../db");
+  models: { Order, OrderProduct },
+} = require('../db');
 module.exports = router;
 
 // GET /api/cart/:userId
-router.get("/cart/:userId", async (req, res, next) => {
+router.get('/:userId', async (req, res, next) => {
   try {
-    const cartOrder = Order.findOne({
+    const cartOrder = await Order.findOne({
       where: {
         userId: req.params.userId,
         isCart: true,
       },
     });
+
+    //query orderProducts table
+    const cartProducts = await OrderProduct.findAll({
+      where: {
+        orderId: cartOrder.id,
+      },
+      attributes: ['productId', 'quantity'],
+    });
+
+    res.send(cartProducts);
   } catch (error) {
     next(error);
   }
