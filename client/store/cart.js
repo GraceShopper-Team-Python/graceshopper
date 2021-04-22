@@ -4,11 +4,22 @@ const initialState = [];
 
 // action types
 const SET_CART = "SET_CART";
+<<<<<<< HEAD
+=======
+const UPDATE_CART = "UPDATE_CART";
+>>>>>>> 87f68431a0b9b32eff309cf13a8c34134b83eb06
 
 //action creators
 export const setCart = (cartObj) => {
   return {
     type: SET_CART,
+    cartObj,
+  };
+};
+
+export const updateCart = (cartObj) => {
+  return {
+    type: UPDATE_CART,
     cartObj,
   };
 };
@@ -24,6 +35,18 @@ export const fetchCart = (userId) => {
           dispatch(setCart(cart));
         }
       }
+    } catch (err) {
+      throw err;
+    }
+  };
+};
+
+export const addToCart = (userId, productId) => {
+  return async (dispatch) => {
+    try {
+      const { data: product } = await axios.post(
+        `/api/cart/${userId}/${productId}`
+      );
     } catch (err) {
       throw err;
     }

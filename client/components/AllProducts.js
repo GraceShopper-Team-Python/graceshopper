@@ -1,7 +1,7 @@
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchProducts } from '../store/products';
-import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { fetchProducts } from "../store/products";
+import React, { Component } from "react";
 
 export class AllProducts extends Component {
   componentDidMount() {
@@ -15,9 +15,7 @@ export class AllProducts extends Component {
         {products.map((product) => {
           return (
             <div key={product.id}>
-              <Link to={`/products/${product.id}`} >
-              <div>{product.name}</div>
-              </Link>
+              <Link to={`/products/${product.id}`}>{product.name}</Link>
               <div>{product.description}</div>
               <div>
                 <img src={product.imageUrl} />
