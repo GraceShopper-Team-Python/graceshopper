@@ -1,10 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
 const initialState = {};
 
 // action types
-const SET_CART = "SET_CART";
-const UPDATE_CART = "UPDATE_CART";
+const SET_CART = 'SET_CART';
+const UPDATE_CART = 'UPDATE_CART';
+const DELETE_ITEM = 'DELETE_ITEM';
 
 //action creators
 export const setCart = (cartObj) => {
@@ -18,6 +19,13 @@ export const updateCart = (cartObj) => {
   return {
     type: UPDATE_CART,
     cartObj,
+  };
+};
+
+export const deleteItem = (cart) => {
+  return {
+    type: DELETE_ITEM,
+    cart,
   };
 };
 
@@ -49,11 +57,28 @@ export const addToCart = (userId, productId) => {
   };
 };
 
+export const deleteFromCart = (userId, productId) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete(`/api/cart/${userId}/${productId}`);
+      dispatch(deleteItem(productId));
+    } catch (err) {
+      throw err;
+    }
+  };
+};
+
 //reducer
 export default function cartsReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CART:
       return action.cartObj;
+    case UPDATE_CART:
+      return [...state, action.cartObj];
+    case DELETE_ITEM:
+      return state.filter((product) => {
+        product.id !== action.cart.id;
+      });
     default:
       return state;
   }
