@@ -2,33 +2,40 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchCart } from "../store/cart";
-import { fetchProduct } from '../store/singleProduct'
+
 
 class Cart extends React.Component {
   async componentDidMount() {
-    this.props.fetchCart(1);
+    this.props.fetchCart(this.props.auth.id);
   }
   render() {
-
+    const products = this.props.cart.products || []
     return (
     <div>
+      <div>
+        {products.map((product) => (
+          <div key={product.id}>
+            <h4>{product.name}</h4>
+            <h4>{product.price / 100}</h4>
+          </div>
+        ))}
+      </div>
       <Link to={'/checkout'} >Go to checkout?</Link>
     </div>
     );
   }
 }
 
-// const mapState = (state) => ({
-//   cart: state.cart,
-// });
-
 const mapState = (state) => {
-  console.log(state)
   return {
     cart: state.cart,
-    products: state.productsReducer,
+    auth: state.auth,
   };
 };
 
+const mapDispatch = (dispatch) => ({
+  fetchCart: (id) => dispatch(fetchCart(id)),
+});
 
-export default connect(mapState, null)(Cart);
+
+export default connect(mapState, mapDispatch)(Cart);
