@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { addToCart } from "../store/cart";
 import { fetchProduct } from "../store/singleProduct";
 
+
 class SingleProduct extends React.Component {
   componentDidMount() {
     const id = this.props.match.params.productId;

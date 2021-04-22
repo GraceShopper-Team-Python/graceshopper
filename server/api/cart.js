@@ -12,17 +12,20 @@ router.get("/:userId", async (req, res, next) => {
         userId: req.params.userId,
         isCart: true,
       },
+      include: [{model: Product}]
     });
 
     //query orderProducts table
     const cartProducts = await OrderProduct.findAll({
-      where: {
-        orderId: cartOrder.id,
-      },
-      attributes: ["productId", "quantity"],
+
+    //   where: {
+    //     orderId: cartOrder.id,
+    //   },
+    //   // attributes: ['productId', 'quantity'],
+    //   include: [ { model: Product } ],
     });
 
-    res.send(cartProducts);
+    res.send(cartOrder);
   } catch (error) {
     next(error);
   }
