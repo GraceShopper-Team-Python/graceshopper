@@ -1,22 +1,22 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withRouter, Route, Switch, Redirect } from "react-router-dom";
+import { withRouter, Route, Switch } from "react-router-dom";
 import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/Home";
 import SingleProduct from "./components/SingleProduct";
 import { me } from "./store";
 import AllProducts from "./components/AllProducts";
-import {fetchCart} from "./store/cart"
-import Checkout from './components/Checkout'
+import { fetchCart } from "./store/cart";
+import Checkout from "./components/Checkout";
 import Cart from "./components/Cart";
 
 /**
  * COMPONENT
  */
 class Routes extends Component {
-  componentDidMount() {
-    this.props.loadInitialData();
-    this.props.setCart(this.props.userId)
+  async componentDidMount() {
+    await this.props.loadInitialData();
+    await this.props.fetchCart(this.props.auth.id);
   }
 
   render() {
@@ -33,8 +33,8 @@ class Routes extends Component {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/home" component={Home} />
-          <Route path='/cart' component={Cart} />
-          <Route path ='/checkout' component={Checkout} />
+          <Route path="/cart" component={Cart} />
+          <Route path="/checkout" component={Checkout} />
           <Route exact path="/products" component={AllProducts} />
           <Route path="/products/:productId" component={SingleProduct} />
         </Switch>
@@ -51,7 +51,7 @@ const mapState = (state) => {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
-    userId: state.auth.id
+    auth: state.auth,
   };
 };
 
@@ -60,7 +60,7 @@ const mapDispatch = (dispatch) => {
     loadInitialData() {
       dispatch(me());
     },
-    setCart: (userId) => dispatch(fetchCart(userId))
+    fetchCart: (userId) => dispatch(fetchCart(userId)),
   };
 };
 
