@@ -2,7 +2,7 @@ const router = require('express').Router();
 const {
   models: { User },
 } = require('../db');
-module.exports = router;
+
 
 //post /auth/login
 router.post('/login', async (req, res, next) => {
@@ -33,3 +33,6 @@ router.get('/me', async (req, res, next) => {
     next(ex);
   }
 });
+
+module.exports = router
+
