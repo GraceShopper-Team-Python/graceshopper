@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const initialState = [];
+const initialState = {};
 
 // action types
 const SET_CART = "SET_CART";
@@ -28,9 +28,8 @@ export const fetchCart = (userId) => {
       if (userId) {
         // /api/cart/${userId} should send array of product objects
         const { data: cart } = await axios.get(`/api/cart/${userId}`);
-        if (cart) {
-          dispatch(setCart(cart));
-        }
+        console.log(cart);
+        dispatch(setCart(cart));
       }
     } catch (err) {
       throw err;
