@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 
 const initialState = [];
 
 // action types
-const SET_CART = 'SET_CART';
+const SET_CART = "SET_CART";
 
 //action creators
 export const setCart = (cartObj) => {
