@@ -1,9 +1,7 @@
-import axios from "axios";
-
-
+import axios from 'axios';
 
 // action types
-const SET_PRODUCT = "SET_PRODUCT";
+const SET_PRODUCT = 'SET_PRODUCT';
 
 //action creators
 export const setProduct = (product) => {
