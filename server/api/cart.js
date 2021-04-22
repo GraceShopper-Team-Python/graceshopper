@@ -46,14 +46,22 @@ router.post("/:userId/:productId", async (req, res, next) => {
       let cartProduct = await OrderProduct.findOne({
         where: {
           productId: req.params.productId,
+          orderId: cartOrder.id,
         },
       });
-      if (cartProduct) await cartProduct.increment("quantity", { by: 1 });
-      else {
-        cartProduct = await cartOrder.addProduct(req.params.productId);
-        console.log("NEW PRODUCT---->>>>>", cartProduct);
+      if (cartProduct) {
+        await cartProduct.increment("quantity", { by: 1 });
+      } else {
+        await cartOrder.addProduct(req.params.productId);
+        cartProduct = await OrderProduct.findOne({
+          where: {
+            productId: req.params.productId,
+            orderId: cartOrder.id,
+          },
+        });
+        cartProduct.productPrice = product.price;
+        await cartProduct.save();
       }
-
       res.send(cartProduct);
     } else {
       throw new Error("Product Does Not Exist");
