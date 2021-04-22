@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchCart } from '../store/cart';
 import { deleteFromCart } from '../store/cart';
+import { me } from '../store/auth';
 
 class Cart extends React.Component {
   async componentDidMount() {
-    this.props.fetchCart(this.props.auth.id);
+    await this.props.loadInitialData();
+    await this.props.fetchCart(this.props.auth.id);
   }
 
   render() {
@@ -35,6 +37,7 @@ class Cart extends React.Component {
 }
 
 const mapState = (state) => {
+  console.log(state);
   return {
     cart: state.cart,
     auth: state.auth,
@@ -42,6 +45,7 @@ const mapState = (state) => {
 };
 
 const mapDispatch = (dispatch) => ({
+  loadInitialData: () => dispatch(me()),
   fetchCart: (id) => dispatch(fetchCart(id)),
   deleteFromCart: (userId, productId) =>
     dispatch(deleteFromCart(userId, productId)),
