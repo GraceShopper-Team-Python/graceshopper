@@ -13,6 +13,10 @@ class SingleProduct extends React.Component {
     console.log("added to cart");
   }
 
+  deleteToCart () {
+
+  }
+
   render() {
     const { selectedProduct } = this.props;
     return (
@@ -28,6 +32,7 @@ class SingleProduct extends React.Component {
 
 const mapState = (state) => ({
   selectedProduct: state.selectedProduct,
+  cart: state.cart
 });
 
 const mapDispatch = (dispatch) => ({
