@@ -66,6 +66,7 @@ async function seed() {
   await orders[2].addProduct(products[3]);
 
   // console.log(orders[0].__proto__);
+  
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
   return {

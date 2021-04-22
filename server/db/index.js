@@ -17,6 +17,7 @@ Product.belongsToMany(Order, {through: OrderProduct})
 
 
 
+
 module.exports = {
   db,
   models: {
