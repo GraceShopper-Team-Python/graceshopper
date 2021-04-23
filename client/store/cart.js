@@ -34,8 +34,8 @@ export const fetchCart = (userId) => {
   return async (dispatch) => {
     try {
       if (userId) {
-        // /api/cart/${userId} should send array of product objects
-        const { data: cart } = await axios.get(`/api/cart/${userId}`);
+        const token = window.localStorage.getItem(TOKEN)
+        const { data: cart } = await axios.get(`/api/cart/${userId}`, {headers: {Authorization: token}});
         console.log(cart);
         dispatch(setCart(cart));
       }
@@ -48,9 +48,12 @@ export const fetchCart = (userId) => {
 export const addToCart = (userId, productId) => {
   return async (dispatch) => {
     try {
-      const { data: product } = await axios.post(
-        `/api/cart/${userId}/${productId}`
-      );
+      const token = window.localStorage.getItem(TOKEN);
+      const {
+        data: product,
+      } = await axios.post(`/api/cart/${userId}/${productId}`, {
+        headers: { Authorization: token },
+      });
     } catch (err) {
       throw err;
     }
@@ -60,7 +63,10 @@ export const addToCart = (userId, productId) => {
 export const deleteFromCart = (userId, productId) => {
   return async (dispatch) => {
     try {
-      await axios.delete(`/api/cart/${userId}/${productId}`);
+      const token = window.localStorage.getItem(TOKEN);
+      await axios.delete(`/api/cart/${userId}/${productId}`, {
+        headers: { Authorization: token },
+      });
       dispatch(deleteItem(productId));
     } catch (err) {
       throw err;
@@ -76,9 +82,12 @@ export default function cartsReducer(state = initialState, action) {
     case UPDATE_CART:
       return [...state, action.cartObj];
     case DELETE_ITEM:
-      return state.filter((product) => {
-        product.id !== action.cart.id;
-      });
+      return {
+        ...state,
+        products: state.products.filter((product) => {
+          return product.id !== action.cart;
+        }),
+      };
     default:
       return state;
   }

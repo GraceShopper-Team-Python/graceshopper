@@ -6,7 +6,7 @@ const requireToken = async (req, res, next) => {
   try {
 
     const token = req.headers.authorization;
- console.log('IN MIDDLEWARE TOKEN',token,'----->>>>>>' );
+ 
     req.user = await User.findByToken(token);
     next();
   } catch (error) {
@@ -14,4 +14,25 @@ const requireToken = async (req, res, next) => {
   }
 };
 
-module.exports = requireToken;
+const requireAdmin = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+    const user = await User.findByToken(token);
+    if(user.isAdmin){
+      req.user = user
+      next();
+    }
+    else {
+      const error = new Error ('Permission Denied')
+      error.status = 403;
+      throw error
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  requireAdmin,
+  requireToken
+}
