@@ -2,10 +2,11 @@ const router = require('express').Router();
 const {
   models: { Order, OrderProduct, Product },
 } = require('../db');
-module.exports = router;
+const {requireToken }= require('../auth/authMiddleware')
+
 
 // GET /api/cart/:userId
-router.get('/:userId', async (req, res, next) => {
+router.get('/:userId', requireToken, async (req, res, next) => {
   try {
     const cartOrder = await Order.findOne({
       where: {
@@ -30,8 +31,9 @@ router.get('/:userId', async (req, res, next) => {
   }
 });
 
+
 // POST /api/cart/:userId/:productId
-router.post('/:userId/:productId', async (req, res, next) => {
+router.post('/:userId/:productId', requireToken, async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -74,7 +76,7 @@ router.post('/:userId/:productId', async (req, res, next) => {
 });
 
 //delete /api/cart/:userId/:productId
-router.delete('/:userId/:productId', async (req, res, next) => {
+router.delete('/:userId/:productId',requireToken, async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -107,3 +109,5 @@ router.delete('/:userId/:productId', async (req, res, next) => {
     next(err);
   }
 });
+
+module.exports = router;

@@ -13,6 +13,8 @@ class Cart extends React.Component {
 
   render() {
     const products = this.props.cart.products || [];
+
+
     return (
       <div>
         <div>
@@ -46,7 +48,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => ({
   loadInitialData: () => dispatch(me()),
-  fetchCart: (id) => dispatch(fetchCart(id)),
+  fetchCart: (userId) => dispatch(fetchCart(userId)),
   deleteFromCart: (userId, productId) =>
     dispatch(deleteFromCart(userId, productId)),
 });
