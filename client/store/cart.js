@@ -82,9 +82,12 @@ export default function cartsReducer(state = initialState, action) {
     case UPDATE_CART:
       return [...state, action.cartObj];
     case DELETE_ITEM:
-      return state.filter((product) => {
-        product.id !== action.cart.id;
-      });
+      return {
+        ...state,
+        products: state.products.filter((product) => {
+          return product.id !== action.cart;
+        }),
+      };
     default:
       return state;
   }
