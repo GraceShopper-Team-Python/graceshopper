@@ -1,25 +1,17 @@
 import axios from "axios";
 
-const initialState = {};
-
 const TOKEN = "token";
+
+const initialState = {};
 
 // action types
 const SET_CART = "SET_CART";
-const UPDATE_CART = "UPDATE_CART";
 const DELETE_ITEM = "DELETE_ITEM";
 
 //action creators
 export const setCart = (cartObj) => {
   return {
     type: SET_CART,
-    cartObj,
-  };
-};
-
-export const updateCart = (cartObj) => {
-  return {
-    type: UPDATE_CART,
     cartObj,
   };
 };
@@ -38,9 +30,8 @@ export const fetchCart = (userId) => {
       if (userId) {
         const token = window.localStorage.getItem(TOKEN);
         const { data: cart } = await axios.get(`/api/cart/${userId}`, {
-          headers: { Authorization: token },
+          headers: { authorization: token },
         });
-        console.log(cart);
         dispatch(setCart(cart));
       }
     } catch (err) {
@@ -53,10 +44,11 @@ export const addToCart = (userId, productId) => {
   return async (dispatch) => {
     try {
       const token = window.localStorage.getItem(TOKEN);
+      console.log("IN ADD TO CART ------>", token);
       const { data: product } = await axios.post(
         `/api/cart/${userId}/${productId}`,
         {
-          headers: { Authorization: token },
+          headers: { authorization: token },
         }
       );
     } catch (err) {
@@ -70,7 +62,7 @@ export const deleteFromCart = (userId, productId) => {
     try {
       const token = window.localStorage.getItem(TOKEN);
       await axios.delete(`/api/cart/${userId}/${productId}`, {
-        headers: { Authorization: token },
+        headers: { authorization: token },
       });
       dispatch(deleteItem(productId));
     } catch (err) {
@@ -84,8 +76,7 @@ export default function cartsReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CART:
       return action.cartObj;
-    case UPDATE_CART:
-      return [...state, action.cartObj];
+
     case DELETE_ITEM:
       return {
         ...state,

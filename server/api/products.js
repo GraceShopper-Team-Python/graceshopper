@@ -2,7 +2,7 @@ const router = require("express").Router();
 const {
   models: { Product },
 } = require("../db");
-module.exports = router;
+
 const { requireAdmin } = require("../auth/authMiddleware");
 
 // GET /api/products
@@ -57,3 +57,5 @@ router.delete("/:id", requireAdmin, async (req, res, next) => {
     next(error);
   }
 });
+
+module.exports = router;
