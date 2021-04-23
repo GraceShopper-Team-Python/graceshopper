@@ -2,7 +2,7 @@ const router = require('express').Router();
 const {
   models: { Product },
 } = require('../db');
-module.exports = router;
+
 const {requireAdmin} = require('../auth/authMiddleware')
 
 // GET /api/products
@@ -51,7 +51,7 @@ router.delete('/:id', requireAdmin, async(req, res, next)=> {
        res.status(200).send('Successfully Deleted');
     }
     else {
-      const error = new Error ('Product not found')
+      const error = new Error('Product not found')
       error.status = 404
       throw error
     }
@@ -62,3 +62,4 @@ router.delete('/:id', requireAdmin, async(req, res, next)=> {
   }
 })
 
+module.exports = router;
