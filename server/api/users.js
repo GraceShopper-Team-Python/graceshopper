@@ -2,7 +2,7 @@ const router = require("express").Router();
 const {
   models: { User },
 } = require("../db");
-const requireToken = require("../auth/authMiddleware");
+const { requireToken } = require("../auth/authMiddleware");
 
 //get /api/users
 router.get("/", requireToken, async (req, res, next) => {
