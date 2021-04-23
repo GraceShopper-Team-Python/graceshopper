@@ -95,7 +95,7 @@ router.delete('/:userId/:productId', async (req, res, next) => {
         },
       });
       if (cartProduct) {
-        await OrderProduct.destroy({
+        await cartProduct.destroy({
           truncate: true,
         });
         res.sendStatus(204);
