@@ -7,6 +7,7 @@ const initialState = {};
 // action types
 const SET_CART = "SET_CART";
 const DELETE_ITEM = "DELETE_ITEM";
+const ADDED_ITEM = "ADDED_ITEM";
 
 //action creators
 export const setCart = (cartObj) => {
@@ -23,6 +24,13 @@ export const deleteItem = (cart) => {
   };
 };
 
+export const addedItem = (item) => {
+  return {
+    type: ADDED_ITEM,
+    item,
+  };
+};
+
 // thunk creator
 export const fetchCart = (userId) => {
   return async (dispatch) => {
@@ -32,6 +40,7 @@ export const fetchCart = (userId) => {
         const { data: cart } = await axios.get(`/api/cart/${userId}`, {
           headers: { authorization: token },
         });
+        console.log(cart);
         dispatch(setCart(cart));
       }
     } catch (err) {
@@ -42,15 +51,22 @@ export const fetchCart = (userId) => {
 
 export const addToCart = (userId, productId) => {
   return async (dispatch) => {
+    const token = window.localStorage.getItem(TOKEN);
     try {
-      const token = window.localStorage.getItem(TOKEN);
-      console.log("IN ADD TO CART ------>", token);
-      const { data: product } = await axios.post(
-        `/api/cart/${userId}/${productId}`,
-        {
-          headers: { authorization: token },
-        }
-      );
+      if (token) {
+        const headers = {
+          headers: {
+            authorization: token,
+          },
+        };
+        const { data: product } = await axios.post(
+          `/api/cart/${userId}/${productId}`,
+          null,
+          headers
+        );
+        console.log(product);
+        dispatch(addedItem(product));
+      }
     } catch (err) {
       throw err;
     }
@@ -76,7 +92,19 @@ export default function cartsReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CART:
       return action.cartObj;
-
+    case ADDED_ITEM: {
+      let newCart = Object.assign({}, state);
+      if (!state.products.some((product) => product.id === action.item.id)) {
+        newCart.products.push(action.item);
+      } else {
+        newCart.products = newCart.products.map((product) => {
+          if (product.id === action.item.id) {
+            product.quantity++;
+          }
+        });
+      }
+      return newCart;
+    }
     case DELETE_ITEM:
       return {
         ...state,
