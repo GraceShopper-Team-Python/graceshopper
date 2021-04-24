@@ -40,7 +40,6 @@ export const fetchCart = (userId) => {
         const { data: cart } = await axios.get(`/api/cart/${userId}`, {
           headers: { authorization: token },
         });
-        console.log(cart);
         dispatch(setCart(cart));
       }
     } catch (err) {
@@ -64,7 +63,11 @@ export const addToCart = (userId, productId) => {
           null,
           headers
         );
-        console.log(product);
+        console.log("Logged in: ", product);
+        dispatch(addedItem(product));
+      } else {
+        const { data: product } = await axios.get(`/api/products/${productId}`);
+        console.log("Not Logged in:", product);
         dispatch(addedItem(product));
       }
     } catch (err) {
@@ -93,25 +96,32 @@ export default function cartsReducer(state = initialState, action) {
     case SET_CART:
       return action.cartObj;
     case ADDED_ITEM: {
-      let newCart = Object.assign({}, state);
-      if (!state.products.some((product) => product.id === action.item.id)) {
-        newCart.products.push(action.item);
+      console.log(action);
+      let newCart = { ...state };
+      if (newCart[action.item.id]) {
+        newCart[action.item.id].quantity++;
       } else {
-        newCart.products = newCart.products.map((product) => {
-          if (product.id === action.item.id) {
-            product.quantity++;
-          }
-        });
+        newCart[action.item.id] = {
+          quantity: 1,
+          price: action.item.price,
+          name: action.item.name,
+          description: action.item.description,
+          imageUrl: action.item.imageUrl,
+        };
       }
       return newCart;
     }
-    case DELETE_ITEM:
-      return {
-        ...state,
-        products: state.products.filter((product) => {
-          return product.id !== action.cart;
-        }),
-      };
+    case DELETE_ITEM: {
+      // return {
+      //   ...state,
+      //   products: state.products.filter((product) => {
+      //     return product.id !== action.cart;
+      //   }),
+      // };
+      let newCart = { ...state };
+      delete newCart[action.cart];
+      return newCart;
+    }
     default:
       return state;
   }

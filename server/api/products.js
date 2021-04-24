@@ -37,7 +37,24 @@ router.post("/", requireAdmin, async (req, res, next) => {
   }
 });
 
-// POST /api/products
+// PUT /api/products/:id
+router.put("/:id", requireAdmin, async (req, res, next) => {
+  try {
+    const { name, imageUrl, description, price, stock } = req.body;
+    const product = await Product.findByPk(req.params.id);
+    product.name = name;
+    product.imageUrl = imageUrl;
+    product.description = description;
+    product.price = price;
+    product.stock = stock;
+    await product.save();
+    res.send(product);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// DELETE /api/products/:id
 router.delete("/:id", requireAdmin, async (req, res, next) => {
   try {
     const product = await Product.findOne({

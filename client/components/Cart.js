@@ -12,11 +12,11 @@ class Cart extends React.Component {
   }
 
   render() {
-    const products = this.props.cart.products || [];
-
+    // const products = this.props.cart.products || [];
+    const products = this.props.cart;
     return (
       <div>
-        <div>
+        {/* <div>
           {products.map((product) => (
             <div key={product.id}>
               <h4>{product.name}</h4>
@@ -24,6 +24,21 @@ class Cart extends React.Component {
               <button
                 onClick={() =>
                   this.props.deleteFromCart(this.props.auth.id, product.id)
+                }
+              >
+                Remove Item From Cart
+              </button>
+            </div>
+          ))}
+        </div> */}
+        <div>
+          {Object.keys(products).map((product) => (
+            <div key={product}>
+              <h4>{products[product].name}</h4>
+              <h4>${Number(products[product].price / 100).toFixed(2)}</h4>
+              <button
+                onClick={() =>
+                  this.props.deleteFromCart(this.props.auth.id, product)
                 }
               >
                 Remove Item From Cart

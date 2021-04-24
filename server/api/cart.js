@@ -15,6 +15,19 @@ router.get("/:userId", requireToken, async (req, res, next) => {
       include: [{ model: Product }],
     });
 
+    let userCart = {};
+    cartOrder.products.map((product) => {
+      userCart[product.id] = {
+        quantity: product.orderProduct.quantity,
+        price: product.price,
+        name: product.name,
+        description: product.description,
+        imageUrl: product.imageUrl,
+      };
+    });
+
+    res.send(userCart);
+
     //query orderProducts table
     // const cartProducts = await OrderProduct.findAll({
     //   where: {
@@ -23,8 +36,6 @@ router.get("/:userId", requireToken, async (req, res, next) => {
     //   // attributes: ['productId', 'quantity'],
     //   include: [ { model: Product } ],
     // });
-
-    res.send(cartOrder);
   } catch (error) {
     next(error);
   }

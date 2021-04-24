@@ -6,7 +6,13 @@ const requireToken = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     req.user = await User.findByToken(token);
-    next();
+    if (req.user.id === Number(req.params.userId)) {
+      next();
+    } else {
+      let error = new Error("Unauthorized User");
+      error.status = 403;
+      throw error;
+    }
   } catch (error) {
     next(error);
   }
