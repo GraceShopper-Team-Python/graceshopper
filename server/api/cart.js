@@ -32,6 +32,8 @@ router.get("/:userId", requireToken, async (req, res, next) => {
   }
 });
 
+//Make put route for updating isCart to false
+
 // POST /api/cart/:userId/:productId
 router.post("/:userId/:productId", requireToken, async (req, res, next) => {
   try {
@@ -65,8 +67,9 @@ router.post("/:userId/:productId", requireToken, async (req, res, next) => {
         });
         cartProduct.productPrice = product.price;
         await cartProduct.save();
+        res.send(cartProduct);
       }
-      res.send(cartProduct);
+
     } else {
       throw new Error("Product Does Not Exist");
     }
