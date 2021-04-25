@@ -1,23 +1,18 @@
-import axios from 'axios';
+import axios from "axios";
+
+const TOKEN = "token";
 
 const initialState = {};
 
 // action types
-const SET_CART = 'SET_CART';
-const UPDATE_CART = 'UPDATE_CART';
-const DELETE_ITEM = 'DELETE_ITEM';
+const SET_CART = "SET_CART";
+const DELETE_ITEM = "DELETE_ITEM";
+const ADDED_ITEM = "ADDED_ITEM";
 
 //action creators
 export const setCart = (cartObj) => {
   return {
     type: SET_CART,
-    cartObj,
-  };
-};
-
-export const updateCart = (cartObj) => {
-  return {
-    type: UPDATE_CART,
     cartObj,
   };
 };
@@ -29,14 +24,22 @@ export const deleteItem = (cart) => {
   };
 };
 
+export const addedItem = (item) => {
+  return {
+    type: ADDED_ITEM,
+    item,
+  };
+};
+
 // thunk creator
 export const fetchCart = (userId) => {
   return async (dispatch) => {
     try {
       if (userId) {
-        // /api/cart/${userId} should send array of product objects
-        const { data: cart } = await axios.get(`/api/cart/${userId}`);
-        console.log(cart);
+        const token = window.localStorage.getItem(TOKEN);
+        const { data: cart } = await axios.get(`/api/cart/${userId}`, {
+          headers: { authorization: token },
+        });
         dispatch(setCart(cart));
       }
     } catch (err) {
@@ -47,10 +50,26 @@ export const fetchCart = (userId) => {
 
 export const addToCart = (userId, productId) => {
   return async (dispatch) => {
+    const token = window.localStorage.getItem(TOKEN);
     try {
-      const { data: product } = await axios.post(
-        `/api/cart/${userId}/${productId}`
-      );
+      if (token) {
+        const headers = {
+          headers: {
+            authorization: token,
+          },
+        };
+        const { data: product } = await axios.post(
+          `/api/cart/${userId}/${productId}`,
+          null,
+          headers
+        );
+        console.log("Logged in: ", product);
+        dispatch(addedItem(product));
+      } else {
+        const { data: product } = await axios.get(`/api/products/${productId}`);
+        console.log("Not Logged in:", product);
+        dispatch(addedItem(product));
+      }
     } catch (err) {
       throw err;
     }
@@ -60,7 +79,10 @@ export const addToCart = (userId, productId) => {
 export const deleteFromCart = (userId, productId) => {
   return async (dispatch) => {
     try {
-      await axios.delete(`/api/cart/${userId}/${productId}`);
+      const token = window.localStorage.getItem(TOKEN);
+      await axios.delete(`/api/cart/${userId}/${productId}`, {
+        headers: { authorization: token },
+      });
       dispatch(deleteItem(productId));
     } catch (err) {
       throw err;
@@ -73,15 +95,27 @@ export default function cartsReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CART:
       return action.cartObj;
-    case UPDATE_CART:
-      return [...state, action.cartObj];
-    case DELETE_ITEM:
-      return {
-        ...state,
-        products: state.products.filter((product) => {
-          return product.id !== action.cart;
-        }),
-      };
+    case ADDED_ITEM: {
+      console.log(action);
+      let newCart = { ...state };
+      if (newCart[action.item.id]) {
+        newCart[action.item.id].quantity++;
+      } else {
+        newCart[action.item.id] = {
+          quantity: 1,
+          price: action.item.price,
+          name: action.item.name,
+          description: action.item.description,
+          imageUrl: action.item.imageUrl,
+        };
+      }
+      return newCart;
+    }
+    case DELETE_ITEM: {
+      let newCart = { ...state };
+      delete newCart[action.cart];
+      return newCart;
+    }
     default:
       return state;
   }

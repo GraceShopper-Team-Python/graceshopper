@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 
-import { me } from '../store';
-import { addToCart, fetchCart } from '../store/cart';
-import { fetchProduct } from '../store/singleProduct';
+import { me } from "../store";
+import { addToCart, fetchCart } from "../store/cart";
+import { fetchProduct } from "../store/singleProduct";
 
 class SingleProduct extends React.Component {
   async componentDidMount() {

@@ -1,11 +1,11 @@
-const router = require('express').Router();
+const router = require("express").Router();
 const {
   models: { Order, OrderProduct, Product },
-} = require('../db');
-module.exports = router;
+} = require("../db");
+const { requireToken } = require("../auth/authMiddleware");
 
 // GET /api/cart/:userId
-router.get('/:userId', async (req, res, next) => {
+router.get("/:userId", requireToken, async (req, res, next) => {
   try {
     const cartOrder = await Order.findOne({
       where: {
@@ -15,23 +15,25 @@ router.get('/:userId', async (req, res, next) => {
       include: [{ model: Product }],
     });
 
-    //query orderProducts table
-    const cartProducts = await OrderProduct.findAll({
-      //   where: {
-      //     orderId: cartOrder.id,
-      //   },
-      //   // attributes: ['productId', 'quantity'],
-      //   include: [ { model: Product } ],
+    let userCart = {};
+    cartOrder.products.map((product) => {
+      userCart[product.id] = {
+        quantity: product.orderProduct.quantity,
+        price: product.price,
+        name: product.name,
+        description: product.description,
+        imageUrl: product.imageUrl,
+      };
     });
 
-    res.send(cartOrder);
+    res.send(userCart);
   } catch (error) {
     next(error);
   }
 });
 
 // POST /api/cart/:userId/:productId
-router.post('/:userId/:productId', async (req, res, next) => {
+router.post("/:userId/:productId", requireToken, async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -52,7 +54,7 @@ router.post('/:userId/:productId', async (req, res, next) => {
         },
       });
       if (cartProduct) {
-        await cartProduct.increment('quantity', { by: 1 });
+        await cartProduct.increment("quantity", { by: 1 });
       } else {
         await cartOrder.addProduct(req.params.productId);
         cartProduct = await OrderProduct.findOne({
@@ -66,7 +68,7 @@ router.post('/:userId/:productId', async (req, res, next) => {
       }
       res.send(cartProduct);
     } else {
-      throw new Error('Product Does Not Exist');
+      throw new Error("Product Does Not Exist");
     }
   } catch (error) {
     next(error);
@@ -74,7 +76,7 @@ router.post('/:userId/:productId', async (req, res, next) => {
 });
 
 //delete /api/cart/:userId/:productId
-router.delete('/:userId/:productId', async (req, res, next) => {
+router.delete("/:userId/:productId", requireToken, async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -107,3 +109,5 @@ router.delete('/:userId/:productId', async (req, res, next) => {
     next(err);
   }
 });
+
+module.exports = router;

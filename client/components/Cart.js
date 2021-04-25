@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchCart } from '../store/cart';
-import { deleteFromCart } from '../store/cart';
-import { me } from '../store/auth';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { fetchCart } from "../store/cart";
+import { deleteFromCart } from "../store/cart";
+import { me } from "../store/auth";
 
 class Cart extends React.Component {
   async componentDidMount() {
@@ -12,17 +12,17 @@ class Cart extends React.Component {
   }
 
   render() {
-    const products = this.props.cart.products || [];
+    const products = this.props.cart;
     return (
       <div>
         <div>
-          {products.map((product) => (
-            <div key={product.id}>
-              <h4>{product.name}</h4>
-              <h4>{product.price / 100}</h4>
+          {Object.keys(products).map((product) => (
+            <div key={product}>
+              <h4>{products[product].name}</h4>
+              <h4>${Number(products[product].price / 100).toFixed(2)}</h4>
               <button
                 onClick={() =>
-                  this.props.deleteFromCart(this.props.auth.id, product.id)
+                  this.props.deleteFromCart(this.props.auth.id, product)
                 }
               >
                 Remove Item From Cart
@@ -30,14 +30,13 @@ class Cart extends React.Component {
             </div>
           ))}
         </div>
-        <Link to={'/checkout'}>Go to checkout?</Link>
+        <Link to={"/checkout"}>Go to checkout?</Link>
       </div>
     );
   }
 }
 
 const mapState = (state) => {
-  console.log(state);
   return {
     cart: state.cart,
     auth: state.auth,
@@ -46,7 +45,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => ({
   loadInitialData: () => dispatch(me()),
-  fetchCart: (id) => dispatch(fetchCart(id)),
+  fetchCart: (userId) => dispatch(fetchCart(userId)),
   deleteFromCart: (userId, productId) =>
     dispatch(deleteFromCart(userId, productId)),
 });
