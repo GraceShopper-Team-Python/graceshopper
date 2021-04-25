@@ -1,9 +1,9 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { fetchCart, subtractFromCart } from "../store/cart";
-import { deleteFromCart, addToCart } from "../store/cart";
-import { me } from "../store/auth";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchCart, subtractFromCart } from '../store/cart';
+import { deleteFromCart, addToCart } from '../store/cart';
+import { me } from '../store/auth';
 
 class Cart extends React.Component {
   async componentDidMount() {
@@ -54,7 +54,7 @@ class Cart extends React.Component {
                 </div>
               ))}
             </div>
-            <Link to={"/confirmation"}>Finalize Order?</Link>
+            <Link to={'/confirmation'}>Finalize Order?</Link>
           </div>
         ) : (
           <h2>Your Cart Is Empty</h2>
@@ -79,6 +79,8 @@ const mapDispatch = (dispatch) => ({
     dispatch(subtractFromCart(userId, productId)),
   deleteFromCart: (userId, productId) =>
     dispatch(deleteFromCart(userId, productId)),
+  updateItem: (userId, productId, direction) =>
+    dispatch(updateItem(userId, productId, direction)),
 });
 
 export default connect(mapState, mapDispatch)(Cart);
