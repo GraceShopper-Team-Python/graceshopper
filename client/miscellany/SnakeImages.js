@@ -1,0 +1,25 @@
+export const snakeImages = [
+  'https://i.natgeofe.com/n/f80a6834-c7d0-4e93-b113-ae708652a527/snakes_01.jpg',
+  'https://www.colorado.edu/cumuseum/sites/default/files/styles/widescreen/public/slider/coachwhip2_1.jpg?itok=ImtHEWPe',
+  'https://thumbs-prod.si-cdn.com/pCDKPyJI6L9ZueCJJzdcsZ9D-t0=/fit-in/1600x0/https://public-media.si-cdn.com/filer/a3/3f/a33f8ee0-bfee-4cce-9a13-f9388c5323c0/42-55375529.jpg',
+  'https://pyxis.nymag.com/v1/imgs/863/94a/a987ba9f31e833523c7954a8a7330c80a2-07-anaconda-snake-movies.rsocial.w1200.jpg',
+  'https://i.ytimg.com/vi/4Chgih5FqSE/maxresdefault.jpg',
+  'https://thumbor.forbes.com/thumbor/fit-in/1200x0/filters%3Aformat%28jpg%29/https%3A%2F%2Fspecials-images.forbesimg.com%2Fimageserve%2F5ea5284f165a170006a5c82b%2F0x0.jpg%3FcropX1%3D0%26cropX2%3D1440%26cropY1%3D32%26cropY2%3D1113',
+  'https://www.sciencenews.org/wp-content/uploads/2020/09/092620_cw_snakebite_feat.jpg',
+  'https://api.timeforkids.com/wp-content/uploads/2020/05/snakebuddies.jpg',
+  'https://www.cdc.gov/niosh/topics/snakes/images/coralsnake.jpg',
+  'https://www.mlive.com/resizer/ztBT9JRzO-gAVOfk3HXzYFJgylo=/450x0/smart/advancelocal-adapter-image-uploads.s3.amazonaws.com/image.mlive.com/home/mlive-media/width2048/img/news_impact/photo/20589953-standard.jpg',
+  'https://fsa.zobj.net/crop.php?r=Cq1fcn5SXycp3vMp8lv0SlCgAWueHgRreX_gWLWJd6xDlIzDRQ3J14wq-6O32iSZtRlAllvNXft6dTizosN1XlxZd8YgwubHEhj9vUThgSGuRSK-D4FJPqmHzhiwFHeKjTXHHNPI7oFAvsfp',
+  'https://wallpaperaccess.com/full/3453584.jpg',
+  'https://www.abc27.com/wp-content/uploads/sites/55/2020/07/Flying-Snakes-1.jpg',
+  'https://i.pinimg.com/736x/38/03/25/380325d729377fc08325c079b0a35b38.jpg',
+  'https://danbooru.donmai.us/data/original/f6/f1/__sekiro_and_great_serpent_sekiro_shadows_die_twice_drawn_by_pixiescout__f6f1096d6ed3fae730052037dde87b5d.jpg',
+  'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/e0dad1ad-2a41-44c4-b716-5112cbe150e0/dd6ndc5-a5246f2c-4cb7-4959-8f97-23724642c849.png/v1/fill/w_1024,h_1434,q_80,strp/god_of_war___jormungand_by_owlkaloid_dd6ndc5-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3siaGVpZ2h0IjoiPD0xNDM0IiwicGF0aCI6IlwvZlwvZTBkYWQxYWQtMmE0MS00NGM0LWI3MTYtNTExMmNiZTE1MGUwXC9kZDZuZGM1LWE1MjQ2ZjJjLTRjYjctNDk1OS04Zjk3LTIzNzI0NjQyYzg0OS5wbmciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.9Gi8E1Gun2Sseb6aAtE0v4zH6ATSZX-XX-lkcoEQmBs',
+  'https://pm1.narvii.com/7730/5e33fd4cee642a23b9985b4c62d9889c536e8984r1-600-450v2_hq.jpg',
+  'http://vignette4.wikia.nocookie.net/scratchpad/images/7/75/Viper-KungFuPanda.png/revision/latest?cb=20130708113731',
+
+  'https://lh3.googleusercontent.com/proxy/dz4ic7UnBXn9aQ_czydzrnHl6J4RdKNbK2F4P1TziTOwWLQ2SzCw5CAElsfG9ppUEvbquvRr8nKoWBisZbNqb-Xil3ssLBM7fLZXR0z5lis9oIyjwQxQkmJbAPH9NBzugRj9J9TVcjdKSrtsalV-sT5Acz6b_sTKHOUZ85iU-yn1v0wHfTHfqO_54kiPrrKeq3z5r-1QmQ',
+
+  'https://d1lss44hh2trtw.cloudfront.net/assets/article/2018/04/23/jotunheim-in-reach-walkthrough-god-of-war-2_1200x500.jpg',
+  'https://images-na.ssl-images-amazon.com/images/I/61aD93njUTL._AC_SY741_.jpg',
+];
