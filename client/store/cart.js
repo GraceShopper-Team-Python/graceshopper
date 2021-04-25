@@ -1,14 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 
-const TOKEN = 'token';
+const TOKEN = "token";
 
 const initialState = {};
 
 // action types
-const SET_CART = 'SET_CART';
-const DELETE_ITEM = 'DELETE_ITEM';
-const ADDED_ITEM = 'ADDED_ITEM';
-const SUBTRACTED_ITEM = 'SUBTRACTED_ITEM';
+const SET_CART = "SET_CART";
+const DELETE_ITEM = "DELETE_ITEM";
+const ADDED_ITEM = "ADDED_ITEM";
+const SUBTRACTED_ITEM = "SUBTRACTED_ITEM";
 
 //action creators
 export const setCart = (cartObj) => {
@@ -116,19 +116,26 @@ export const deleteFromCart = (userId, productId) => {
 export const subtractFromCart = (userId, productId) => {
   return async (dispatch, getState) => {
     try {
+      const token = window.localStorage.getItem(TOKEN);
       const cart = getState().cart;
-      if (cart[productId].quantity === 1) {
-        dispatch(deleteFromCart(userId, productId));
+      if (token) {
+        if (cart[productId].quantity === 1) {
+          dispatch(deleteFromCart(userId, productId));
+        } else {
+          await axios.put(
+            `/api/cart/${userId}/${productId}`,
+            { decrement: 1 },
+            {
+              headers: { authorization: token },
+            }
+          );
+        }
       } else {
-        await axios.put(
-          `/api/cart/${userId}/${productId}`,
-          { decrement: 1 },
-          {
-            headers: { authorization: token },
-          }
-        );
-        dispatch(subtractedAdded(productId));
+        if (cart[productId].quantity === 1) {
+          dispatch(deleteFromCart(userId, productId));
+        }
       }
+      dispatch(subtractedItem(productId));
     } catch (error) {
       throw error;
     }
@@ -160,6 +167,7 @@ export default function cartsReducer(state = initialState, action) {
     }
     case SUBTRACTED_ITEM: {
       newCart[action.productId].quantity--;
+      return newCart;
     }
     default:
       return state;
