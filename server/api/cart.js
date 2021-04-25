@@ -27,15 +27,6 @@ router.get("/:userId", requireToken, async (req, res, next) => {
     });
 
     res.send(userCart);
-
-    //query orderProducts table
-    // const cartProducts = await OrderProduct.findAll({
-    //   where: {
-    //     orderId: cartOrder.id,
-    //   },
-    //   // attributes: ['productId', 'quantity'],
-    //   include: [ { model: Product } ],
-    // });
   } catch (error) {
     next(error);
   }
