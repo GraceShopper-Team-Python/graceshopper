@@ -32,6 +32,8 @@ router.get('/:userId', requireToken, async (req, res, next) => {
   }
 });
 
+//Make put route for updating isCart to false
+
 // POST /api/cart/:userId/:productId
 router.post('/:userId/:productId', requireToken, async (req, res, next) => {
   try {
@@ -60,6 +62,21 @@ router.post('/:userId/:productId', requireToken, async (req, res, next) => {
       await cartProduct.save();
 
       res.send(product);
+      // if (cartProduct) {
+      //   await cartProduct.increment("quantity", { by: 1 });
+      // } else {
+      //   await cartOrder.addProduct(req.params.productId);
+      //   cartProduct = await OrderProduct.findOne({
+      //     where: {
+      //       productId: req.params.productId,
+      //       orderId: cartOrder.id,
+      //     },
+      //   });
+      //   cartProduct.productPrice = product.price;
+      //   await cartProduct.save();
+      //   res.send(cartProduct);
+      //}
+
     } else {
       throw new Error('Product Does Not Exist');
     }

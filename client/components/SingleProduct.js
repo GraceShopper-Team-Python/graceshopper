@@ -19,6 +19,7 @@ class SingleProduct extends React.Component {
         <img src={selectedProduct.imageUrl} />
         <h2>{selectedProduct.name}</h2>
         <p>{selectedProduct.description}</p>
+        
         <button
           onClick={() =>
             this.props.addToCart(this.props.auth.id, selectedProduct.id)

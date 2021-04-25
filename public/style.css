@@ -10,6 +10,12 @@ label {
   display: block;
 }
 
+nav {
+  background-color: rgb(143, 181, 143);
+  display: flex;
+  justify-content: space-around;
+}
+
 nav a {
   display: inline-block;
   margin: 1em;

@@ -2,10 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchCart } from "../store/cart";
-import { deleteFromCart, addToCart } from "../store/cart";
 import { me } from "../store/auth";
 
-class Cart extends React.Component {
+class Confirmation extends React.Component {
   async componentDidMount() {
     await this.props.loadInitialData();
     await this.props.fetchCart(this.props.auth.id);
@@ -13,7 +12,7 @@ class Cart extends React.Component {
 
   render() {
     const products = this.props.cart;
-    console.log(products)
+    console.log(this.props);
     return (
       <div>
         <div>
@@ -22,25 +21,21 @@ class Cart extends React.Component {
               <h4>{products[product].name}</h4>
               <h4>${Number(products[product].price / 100).toFixed(2)}</h4>
               <h4>Quantity: {products[product].quantity}</h4>
-              <button onClick={()=> this.props.addToCart(this.props.auth.id, product)}>+</button>
-              <button>-</button>
               <h4>
                 Quantity Total: $
                 {Number(
                   (products[product].price * products[product].quantity) / 100
                 ).toFixed(2)}
               </h4>
-              <button
-                onClick={() =>
-                  this.props.deleteFromCart(this.props.auth.id, product)
-                }
-              >
-                Remove Item From Cart
-              </button>
             </div>
           ))}
+          <h4>SubTotal: ${Object.keys(products).reduce((accum, product) => (
+            accum + Number(((products[product].price * products[product].quantity) / 100
+                ))
+          ), 0).toFixed(2)
+        }</h4>
         </div>
-        <Link to={"/confirmation"}>Finalize Order?</Link>
+        <Link to={"/checkout"}>Go to Checkout.</Link>
       </div>
     );
   }
@@ -56,9 +51,6 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => ({
   loadInitialData: () => dispatch(me()),
   fetchCart: (userId) => dispatch(fetchCart(userId)),
-  addToCart: (userId, productId) => dispatch(addToCart(userId, productId)),
-  deleteFromCart: (userId, productId) =>
-    dispatch(deleteFromCart(userId, productId)),
 });
 
-export default connect(mapState, mapDispatch)(Cart);
+export default connect(mapState, mapDispatch)(Confirmation);
