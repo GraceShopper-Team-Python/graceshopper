@@ -11,13 +11,13 @@ const {
  */
 async function seed() {
   await db.sync({ force: true }); // clears db and matches models to tables
-  console.log('db synced!');
+  console.log("db synced!");
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ username: 'cody', password: '123' }),
-    User.create({ username: 'murphy', password: '123' }),
-    User.create({ username: 'robert', password: '123', isAdmin: true }),
+    User.create({ username: "cody", password: "123" }),
+    User.create({ username: "murphy", password: "123" }),
+    User.create({ username: "robert", password: "123", isAdmin: true }),
   ]);
 
   //Creating Orders
@@ -30,28 +30,82 @@ async function seed() {
   //Creating Snakes
   const products = await Promise.all([
     Product.create({
-      name: 'python',
-      description: 'a slithery boi',
+      name: "python",
+      description: "a slithery boi",
       price: 2000,
       quantity: 5,
     }),
     Product.create({
-      name: 'monty',
-      description: '-the python, get it?',
+      name: "monty",
+      description: "-the python, get it?",
       price: 1599,
-      quantity: 1969
+      quantity: 1969,
     }),
     Product.create({
-      name: 'king cobra',
-      description: 'the king of all cobras',
+      name: "king cobra",
+      description: "the king of all cobras",
       price: 9999,
-      quantity: 1
+      quantity: 1,
     }),
     Product.create({
-      name: 'grass snake',
-      description: 'no venom, just vibes',
+      name: "grass snake",
+      description: "no venom, just vibes",
       price: 420,
-      quantity: 7000
+      quantity: 7000,
+    }),
+    Product.create({
+      name: "plane snakes",
+      description: "they have a flight to catch",
+      price: 99,
+      quantity: 999999,
+    }),
+    Product.create({
+      name: "viper",
+      description: "fun fact: a vipers injection of venom is a choice",
+      price: 1799,
+      quantity: 999999,
+    }),
+    Product.create({
+      name: "boa",
+      description: "he works part time as a constrictor",
+      price: 950,
+      quantity: 5000,
+    }),
+    Product.create({
+      name: "black mamba",
+      description: "just 2 drops of its venom can kill an adult",
+      price: 2400,
+      quantity: 2400000,
+    }),
+    Product.create({
+      name: "rattlesnake",
+      description: "rattle sold seperately",
+      price: 1100,
+      quantity: 110000,
+    }),
+    Product.create({
+      name: "jörmungandr",
+      description: "a norse serpant that will herald the end of the world",
+      price: 10000000,
+      quantity: 1,
+    }),
+    Product.create({
+      name: "solid-snake",
+      description: "metal gear solid is too complicated to joke about",
+      price: 1998,
+      quantity: 99,
+    }),
+    Product.create({
+      name: "sekiro-snake",
+      description: "you know the one",
+      price: 400,
+      quantity: 2,
+    }),
+    Product.create({
+      name: "blue racer",
+      description: "a really cool looking snake!",
+      price: 7777,
+      quantity: 9999999,
     }),
   ]);
 
@@ -66,7 +120,7 @@ async function seed() {
   await orders[2].addProduct(products[3]);
 
   // console.log(orders[0].__proto__);
-  
+
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
   return {
