@@ -68,6 +68,19 @@ export const deleteFromCart = (userId, productId) => {
   };
 };
 
+export const updateItem = (userId, productId, direction) => {
+  return async (dispatch) => {
+    try {
+      const { data: updated } = await axios.put(
+        `/api/cart/${userId}/${productId}/${direction}`
+      );
+      dispatch(updateCart(updated));
+    } catch (err) {
+      throw err;
+    }
+  };
+};
+
 //reducer
 export default function cartsReducer(state = initialState, action) {
   switch (action.type) {

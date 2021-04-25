@@ -107,3 +107,37 @@ router.delete('/:userId/:productId', async (req, res, next) => {
     next(err);
   }
 });
+
+router.put('/:userId/:productId/:direction', async (req, res, next) => {
+  try {
+    const product = await Product.findOne({
+      where: {
+        id: req.params.productId,
+      },
+    });
+    if (product) {
+      const cartOrder = await Order.findOne({
+        where: {
+          userId: req.params.userId,
+          isCart: true,
+        },
+      });
+      let cartProduct = await OrderProduct.findOne({
+        where: {
+          productId: req.params.productId,
+          orderId: cartOrder.id,
+        },
+      });
+      if (req.params.direction === 'increase') {
+        await cartProduct.increment('quantity', { by: 1 });
+      } else {
+        await cartProduct.decrement('quantity', { by: 1 });
+      }
+      res.send(cartProduct);
+    } else {
+      throw new Error('Product Does Not Exist');
+    }
+  } catch (error) {
+    next(error);
+  }
+});

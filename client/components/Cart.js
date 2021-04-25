@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { fetchCart } from '../store/cart';
 import { deleteFromCart } from '../store/cart';
 import { me } from '../store/auth';
+import { updateItem } from '../store/cart';
 
 class Cart extends React.Component {
   async componentDidMount() {
@@ -13,6 +14,8 @@ class Cart extends React.Component {
 
   render() {
     const products = this.props.cart.products || [];
+    console.log('i am products', products);
+    console.log('i am this.cart', this.props.cart);
     return (
       <div>
         <div>
@@ -20,6 +23,19 @@ class Cart extends React.Component {
             <div key={product.id}>
               <h4>{product.name}</h4>
               <h4>{product.price / 100}</h4>
+              <button
+                onClick={() =>
+                  this.props.updateItem(
+                    this.props.auth.id,
+                    product.id,
+                    'increase'
+                  )
+                }
+              >
+                +
+              </button>
+              <div>Quantity:{product.quantity}</div>
+              <button>-</button>
               <button
                 onClick={() =>
                   this.props.deleteFromCart(this.props.auth.id, product.id)
@@ -37,7 +53,6 @@ class Cart extends React.Component {
 }
 
 const mapState = (state) => {
-  console.log(state);
   return {
     cart: state.cart,
     auth: state.auth,
@@ -49,6 +64,8 @@ const mapDispatch = (dispatch) => ({
   fetchCart: (id) => dispatch(fetchCart(id)),
   deleteFromCart: (userId, productId) =>
     dispatch(deleteFromCart(userId, productId)),
+  updateItem: (userId, productId, direction) =>
+    dispatch(updateItem(userId, productId, direction)),
 });
 
 export default connect(mapState, mapDispatch)(Cart);
