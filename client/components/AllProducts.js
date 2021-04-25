@@ -16,7 +16,6 @@ export class AllProducts extends Component {
           return (
             <div key={product.id}>
               <Link to={`/products/${product.id}`}>{product.name}</Link>
-              <div>{product.description}</div>
               <div>
                 <img src={product.imageUrl} />
               </div>

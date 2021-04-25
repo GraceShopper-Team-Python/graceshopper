@@ -2,10 +2,10 @@ const router = require('express').Router();
 const {
   models: { Order, OrderProduct, Product },
 } = require('../db');
-module.exports = router;
+const { requireToken } = require('../auth/authMiddleware');
 
 // GET /api/cart/:userId
-router.get('/:userId', async (req, res, next) => {
+router.get('/:userId', requireToken, async (req, res, next) => {
   try {
     const cartOrder = await Order.findOne({
       where: {
@@ -15,23 +15,27 @@ router.get('/:userId', async (req, res, next) => {
       include: [{ model: Product }],
     });
 
-    //query orderProducts table
-    const cartProducts = await OrderProduct.findAll({
-      //   where: {
-      //     orderId: cartOrder.id,
-      //   },
-      //   // attributes: ['productId', 'quantity'],
-      //   include: [ { model: Product } ],
+    let userCart = {};
+    cartOrder.products.map((product) => {
+      userCart[product.id] = {
+        quantity: product.orderProduct.quantity,
+        price: product.price,
+        name: product.name,
+        description: product.description,
+        imageUrl: product.imageUrl,
+      };
     });
 
-    res.send(cartOrder);
+    res.send(userCart);
   } catch (error) {
     next(error);
   }
 });
 
+//Make put route for updating isCart to false
+
 // POST /api/cart/:userId/:productId
-router.post('/:userId/:productId', async (req, res, next) => {
+router.post('/:userId/:productId', requireToken, async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -45,26 +49,34 @@ router.post('/:userId/:productId', async (req, res, next) => {
           isCart: true,
         },
       });
+
+      await cartOrder.addProduct(req.params.productId);
+
       let cartProduct = await OrderProduct.findOne({
         where: {
           productId: req.params.productId,
           orderId: cartOrder.id,
         },
       });
-      if (cartProduct) {
-        await cartProduct.increment('quantity', { by: 1 });
-      } else {
-        await cartOrder.addProduct(req.params.productId);
-        cartProduct = await OrderProduct.findOne({
-          where: {
-            productId: req.params.productId,
-            orderId: cartOrder.id,
-          },
-        });
-        cartProduct.productPrice = product.price;
-        await cartProduct.save();
-      }
-      res.send(cartProduct);
+      cartProduct.productPrice = product.price;
+      await cartProduct.save();
+
+      res.send(product);
+      // if (cartProduct) {
+      //   await cartProduct.increment("quantity", { by: 1 });
+      // } else {
+      //   await cartOrder.addProduct(req.params.productId);
+      //   cartProduct = await OrderProduct.findOne({
+      //     where: {
+      //       productId: req.params.productId,
+      //       orderId: cartOrder.id,
+      //     },
+      //   });
+      //   cartProduct.productPrice = product.price;
+      //   await cartProduct.save();
+      //   res.send(cartProduct);
+      //}
+
     } else {
       throw new Error('Product Does Not Exist');
     }
@@ -74,7 +86,7 @@ router.post('/:userId/:productId', async (req, res, next) => {
 });
 
 //delete /api/cart/:userId/:productId
-router.delete('/:userId/:productId', async (req, res, next) => {
+router.delete('/:userId/:productId', requireToken, async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -108,36 +120,43 @@ router.delete('/:userId/:productId', async (req, res, next) => {
   }
 });
 
-router.put('/:userId/:productId/:direction', async (req, res, next) => {
+// PUT /api/cart/:userId/:productId
+router.put('/:userId/:productId', requireToken, async (req, res, next) => {
   try {
-    const product = await Product.findOne({
+     const product = await Product.findOne({
+       where: {
+         id: req.params.productId,
+       },
+     });
+    const cartOrder = await Order.findOne({
       where: {
-        id: req.params.productId,
+        userId: req.params.userId,
+        isCart: true,
       },
     });
-    if (product) {
-      const cartOrder = await Order.findOne({
-        where: {
-          userId: req.params.userId,
-          isCart: true,
-        },
-      });
-      let cartProduct = await OrderProduct.findOne({
-        where: {
-          productId: req.params.productId,
-          orderId: cartOrder.id,
-        },
-      });
-      if (req.params.direction === 'increase') {
-        await cartProduct.increment('quantity', { by: 1 });
-      } else {
-        await cartProduct.decrement('quantity', { by: 1 });
+
+    let cartProduct = await OrderProduct.findOne({
+      where: {
+        productId: req.params.productId,
+        orderId: cartOrder.id,
+      },
+    });
+
+    if (req.body.increment) {
+      await cartProduct.increment('quantity', { by: req.body.increment });
+    } else if (req.body.decrement) {
+      if (cartProduct.quantity === 1) {
+        await cartProduct.destroy({
+          truncate: true,
+        });
+        res.status(204).send('Removed from cart');
       }
-      res.send(cartProduct);
-    } else {
-      throw new Error('Product Does Not Exist');
+      await cartProduct.decrement('quantity', { by: req.body.decrement });
     }
+    res.send(product);
   } catch (error) {
     next(error);
   }
 });
+
+module.exports = router;

@@ -1,17 +1,41 @@
 const {
   models: { User },
-} = require('../db');
+} = require("../db");
 
 const requireToken = async (req, res, next) => {
   try {
-
     const token = req.headers.authorization;
- console.log('IN MIDDLEWARE TOKEN',token,'----->>>>>>' );
     req.user = await User.findByToken(token);
-    next();
+    if (req.user.id === Number(req.params.userId)) {
+      next();
+    } else {
+      let error = new Error("Unauthorized User");
+      error.status = 403;
+      throw error;
+    }
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = requireToken;
+const requireAdmin = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+    const user = await User.findByToken(token);
+    if (user.isAdmin) {
+      req.user = user;
+      next();
+    } else {
+      const error = new Error("Permission Denied");
+      error.status = 403;
+      throw error;
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  requireAdmin,
+  requireToken,
+};
