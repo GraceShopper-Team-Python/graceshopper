@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const { requireToken } = require('../auth/authMiddleware')
+const { requireToken, requireAdmin } = require('../auth/authMiddleware')
 
-router.use('/users', require('./users'));
+router.use('/users', requireToken, requireAdmin,require('./users'));
 router.use('/products', require('./products'));
 router.use('/cart', requireToken, require('./cart'));
 
