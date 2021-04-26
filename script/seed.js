@@ -28,6 +28,7 @@ async function seed() {
     Order.create(),
     Order.create(),
     Order.create(),
+    Order.create({ isCart: false }),
   ]);
 
   //Creating Snakes
@@ -142,6 +143,8 @@ async function seed() {
   await orders[1].addProduct(products[1]);
   await orders[1].addProduct(products[2]);
   await orders[2].addProduct(products[3]);
+  await orders[3].addProduct(products[9])
+  await users[2].addOrder(orders[3]);
 
   // console.log(orders[0].__proto__);
 

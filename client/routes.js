@@ -10,6 +10,7 @@ import { fetchCart } from "./store/cart";
 import Confirmation from "./components/Confirmation";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
+import OrderHistory from "./components/OrderHistory";
 
 /**
  * COMPONENT
@@ -37,6 +38,7 @@ class Routes extends Component {
           <Route path="/cart" component={Cart} />
           <Route path="/confirmation" component={Confirmation} />
           <Route path="/checkout" component={Checkout} />
+          <Route path='/orders' component={OrderHistory} />
           <Route exact path="/products" component={AllProducts} />
           <Route path="/products/:productId" component={SingleProduct} />
         </Switch>

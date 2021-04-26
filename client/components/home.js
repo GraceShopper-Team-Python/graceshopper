@@ -15,7 +15,7 @@ export const Home = (props) => {
 
   return (
     <div>
-      <h5>{username ? <h3>Welcome, {username}</h3> : <h3>Welcome</h3>}</h5>
+      {username ? <h3>Welcome, {username}</h3> : <h3>Welcome</h3>}
       <h5>{snakeJokes}</h5>
       <img src={snakeSrc} />
       <img src={snakeSrc1} />

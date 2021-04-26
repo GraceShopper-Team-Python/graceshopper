@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const {
-  models: { User },
+  models: { User, Order, Product },
 } = require("../db");
 const { requireToken } = require("../auth/authMiddleware");
 
@@ -22,6 +22,22 @@ router.get("/", requireToken, async (req, res, next) => {
     }
   } catch (err) {
     next(err);
+  }
+});
+
+//get /api/users/orders
+//need to get require token integrated
+router.get('/orders/:userId', async(req, res, next) => {
+  try {
+    const cartOrder = await Order.findAll({
+      where: {
+        userId: req.params.userId,
+      },
+      include: [{ model: Product }],
+    })
+    res.send(cartOrder);
+  } catch (e) {
+    next(e);
   }
 });
 
