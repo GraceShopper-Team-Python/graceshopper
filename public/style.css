@@ -1,24 +1,15 @@
 body {
   font-family: sans-serif;
+  margin: 0px;
 }
 
-a {
-  text-decoration: none;
+#app {
+  background-color: #999999;
+  min-height: 100vh;
 }
 
 label {
   display: block;
-}
-
-nav {
-  background-color: rgb(143, 181, 143);
-  display: flex;
-  justify-content: space-around;
-}
-
-nav a {
-  display: inline-block;
-  margin: 1em;
 }
 
 form div {
@@ -26,6 +17,128 @@ form div {
   display: inline-block;
 }
 img {
-  height: 300px;
+  width: 100%;
+  height: auto;
+}
+/*--- TEXT ---*/
+p {
+  color: #2f0601;
+  margin: 0px;
+}
+a {
+  color: #000000;
+  text-decoration: none;
+}
+h1 {
+  color: #000000;
+}
+h2 {
+  font-size: 50px;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+}
+h1,
+h2,
+h3,
+h4 {
+  margin: 0px;
+}
+
+/*--- NAVIGATION ---*/
+.header {
+  justify-content: space-between;
+  background-color: rgb(143, 181, 143);
   width: auto;
+  padding: 10px 50px;
+  align-items: center;
+}
+nav a {
+  padding: 0px 25px;
+}
+
+/*-- Buttons ---*/
+.btn {
+  background-color: #34403a;
+  padding: 10px 25px;
+  color: #ffffff;
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+}
+
+/*--- Home ---*/
+.home .images {
+  width: 100vw;
+  height: 500px;
+  background-size: cover;
+  background-position: center center;
+}
+.welcome {
+  text-transform: capitalize;
+  padding: 10px 50px;
+  background-color: #555555;
+  color: #ffffff;
+  font-weight: 100;
+}
+.intro {
+  height: 40vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.home h2,
+h4 {
+  padding: 0px 0px 20px 0px;
+}
+.home h4 {
+  max-width: 650px;
+  text-align: center;
+  font-weight: 200;
+}
+
+/*--- ALL PRODUCTS ----*/
+.flex {
+  display: flex;
+}
+
+.all-products {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 10px;
+  contain: content;
+}
+
+.all-products .product {
+  width: 20vw;
+  margin: 20px;
+  text-transform: capitalize;
+}
+
+.all-products .product .image {
+  display: flex;
+  justify-content: center;
+  border: 10px solid #34403a;
+  height: 200px;
+  contain: content;
+}
+
+.all-products .product .info {
+  padding: 10px 0px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+
+/*--- SINGLE PROCUCT ---*/
+.single-product .image {
+  width: 50vw;
+  display: flex;
+  justify-content: center;
+  margin: 50px;
+  border: 50px solid #34403a;
+}
+.single-product .info {
+  width: 50vw;
+  margin: 50px;
 }
