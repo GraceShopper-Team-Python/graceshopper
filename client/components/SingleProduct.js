@@ -15,18 +15,23 @@ class SingleProduct extends React.Component {
   render() {
     const { selectedProduct } = this.props;
     return (
-      <div>
-        <img src={selectedProduct.imageUrl} />
-        <h2>{selectedProduct.name}</h2>
-        <p>{selectedProduct.description}</p>
-        
-        <button
-          onClick={() =>
-            this.props.addToCart(this.props.auth.id, selectedProduct.id)
-          }
-        >
-          Add To Cart
-        </button>
+      <div className="single-product flex">
+        <div className="image">
+          <img src={selectedProduct.imageUrl} />
+        </div>
+        <div className="info">
+          <h2>{selectedProduct.name}</h2>
+          <h3>${(selectedProduct.price / 100).toFixed(2)}</h3>
+          <h4>Description: </h4>
+          <p>{selectedProduct.description}</p>
+          <button
+            onClick={() =>
+              this.props.addToCart(this.props.auth.id, selectedProduct.id)
+            }
+          >
+            Add To Cart
+          </button>
+        </div>
       </div>
     );
   }
