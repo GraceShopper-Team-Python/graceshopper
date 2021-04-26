@@ -1,15 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchCart, subtractFromCart } from '../store/cart';
-import { deleteFromCart, addToCart } from '../store/cart';
-import { me } from '../store/auth';
+import { subtractFromCart, deleteFromCart, addToCart } from '../store/cart';
+
 
 class Cart extends React.Component {
-  async componentDidMount() {
-    await this.props.loadInitialData();
-    await this.props.fetchCart(this.props.auth.id);
-  }
+
 
   render() {
     const products = this.props.cart;
@@ -25,14 +21,14 @@ class Cart extends React.Component {
                   <h4>Quantity: {products[product].quantity}</h4>
                   <button
                     onClick={() =>
-                      this.props.addToCart(this.props.auth.id, product)
+                      this.props.addToCart(product)
                     }
                   >
                     +
                   </button>
                   <button
                     onClick={() =>
-                      this.props.subtractFromCart(this.props.auth.id, product)
+                      this.props.subtractFromCart(product)
                     }
                   >
                     -
@@ -46,7 +42,7 @@ class Cart extends React.Component {
                   </h4>
                   <button
                     onClick={() =>
-                      this.props.deleteFromCart(this.props.auth.id, product)
+                      this.props.deleteFromCart(product)
                     }
                   >
                     Remove Item From Cart
@@ -67,20 +63,15 @@ class Cart extends React.Component {
 const mapState = (state) => {
   return {
     cart: state.cart,
-    auth: state.auth,
   };
 };
 
 const mapDispatch = (dispatch) => ({
-  loadInitialData: () => dispatch(me()),
-  fetchCart: (userId) => dispatch(fetchCart(userId)),
-  addToCart: (userId, productId) => dispatch(addToCart(userId, productId)),
-  subtractFromCart: (userId, productId) =>
-    dispatch(subtractFromCart(userId, productId)),
-  deleteFromCart: (userId, productId) =>
-    dispatch(deleteFromCart(userId, productId)),
-  updateItem: (userId, productId, direction) =>
-    dispatch(updateItem(userId, productId, direction)),
+  addToCart: (productId) => dispatch(addToCart(productId)),
+  subtractFromCart: (productId) =>
+    dispatch(subtractFromCart(productId)),
+  deleteFromCart: (productId) =>
+    dispatch(deleteFromCart(productId)),
 });
 
 export default connect(mapState, mapDispatch)(Cart);
