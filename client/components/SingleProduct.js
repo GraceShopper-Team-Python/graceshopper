@@ -10,7 +10,7 @@ class SingleProduct extends React.Component {
     const id = this.props.match.params.productId;
     this.props.fetchProduct(id);
     await this.props.loadInitialData();
-    await this.props.fetchCart(this.props.auth.id);
+    await this.props.fetchCart();
   }
   render() {
     const { selectedProduct } = this.props;
@@ -26,7 +26,7 @@ class SingleProduct extends React.Component {
           <p>{selectedProduct.description}</p>
           <button
             onClick={() =>
-              this.props.addToCart(this.props.auth.id, selectedProduct.id)
+              this.props.addToCart(selectedProduct.id)
             }
           >
             Add To Cart
@@ -46,9 +46,9 @@ const mapState = (state) => ({
 const mapDispatch = (dispatch) => ({
   fetchProduct: (id) => dispatch(fetchProduct(id)),
 
-  addToCart: (userId, productId) => dispatch(addToCart(userId, productId)),
+  addToCart: (productId) => dispatch(addToCart(productId)),
   loadInitialData: () => dispatch(me()),
-  fetchCart: (userId) => dispatch(fetchCart(userId)),
+  fetchCart: () => dispatch(fetchCart()),
 });
 
 export default connect(mapState, mapDispatch)(SingleProduct);

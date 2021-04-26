@@ -4,7 +4,7 @@ const {
 } = require('../db');
 
 
-router.put("/purchase/:userId", async (req, res, next) => {
+router.put("/purchase", async (req, res, next) => {
   try {
     const cartOrder = await Order.findOne({
       where: {
@@ -18,8 +18,8 @@ router.put("/purchase/:userId", async (req, res, next) => {
     next(e);
   }
 });
-// GET /api/cart/:userId
-router.get('/:userId',  async (req, res, next) => {
+// GET /api/cart/
+router.get('/',  async (req, res, next) => {
   try {
     const cartOrder = await Order.findOne({
       where: {
@@ -52,8 +52,8 @@ router.get('/:userId',  async (req, res, next) => {
 });
 
 
-// POST /api/cart/:userId/:productId
-router.post('/:userId/:productId', async (req, res, next) => {
+// POST /api/cart/products/:productId
+router.post('/products/:productId', async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -83,8 +83,8 @@ router.post('/:userId/:productId', async (req, res, next) => {
   }
 });
 
-//delete /api/cart/:userId/:productId
-router.delete('/:userId/:productId', async (req, res, next) => {
+//delete /api/cart/products/:productId
+router.delete('/products/:productId', async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -119,14 +119,14 @@ router.delete('/:userId/:productId', async (req, res, next) => {
   }
 });
 
-// PUT /api/cart/:userId/:productId
-router.put('/:userId/:productId',  async (req, res, next) => {
+// PUT /api/cart/products/:productId
+router.put('/products/:productId', async (req, res, next) => {
   try {
-     const product = await Product.findOne({
-       where: {
-         id: req.params.productId,
-       },
-     });
+    const product = await Product.findOne({
+      where: {
+        id: req.params.productId,
+      },
+    });
     const cartOrder = await Order.findOne({
       where: {
         userId: req.user.id,

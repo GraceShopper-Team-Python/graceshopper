@@ -40,12 +40,12 @@ export const subtractedItem = (productId) => {
 };
 
 // thunk creator
-export const fetchCart = (userId) => {
+export const fetchCart = () => {
   return async (dispatch) => {
     try {
-      if (userId) {
-        const token = window.localStorage.getItem(TOKEN);
-        const { data: cart } = await axios.get(`/api/cart/${userId}`, {
+       const token = window.localStorage.getItem(TOKEN);
+      if (token) {
+        const { data: cart } = await axios.get(`/api/cart`, {
           headers: { authorization: token },
         });
         dispatch(setCart(cart));
@@ -56,7 +56,7 @@ export const fetchCart = (userId) => {
   };
 };
 
-export const addToCart = (userId, productId) => {
+export const addToCart = (productId) => {
   return async (dispatch, getState) => {
     const cart = getState().cart;
     const token = window.localStorage.getItem(TOKEN);
@@ -69,7 +69,7 @@ export const addToCart = (userId, productId) => {
         };
         if (cart[productId]) {
           const { data: product } = await axios.put(
-            `/api/cart/${userId}/${productId}`,
+            `/api/cart/products/${productId}`,
             { increment: 1 },
             {
               headers: { authorization: token },
@@ -78,7 +78,7 @@ export const addToCart = (userId, productId) => {
           dispatch(addedItem(product));
         } else {
           const { data: product } = await axios.post(
-            `/api/cart/${userId}/${productId}`,
+            `/api/cart/products/${productId}`,
             null,
             headers
           );
@@ -94,12 +94,12 @@ export const addToCart = (userId, productId) => {
   };
 };
 
-export const deleteFromCart = (userId, productId) => {
+export const deleteFromCart = (productId) => {
   return async (dispatch) => {
     try {
       const token = window.localStorage.getItem(TOKEN);
       if (token) {
-        await axios.delete(`/api/cart/${userId}/${productId}`, {
+        await axios.delete(`/api/cart/products/${productId}`, {
           headers: { authorization: token },
         });
       }
@@ -110,20 +110,18 @@ export const deleteFromCart = (userId, productId) => {
   };
 };
 
-// remove cart thunk make check quantity
-// if quantity is 1 dispatch delete from cart
-// else axios put call to update quantity
-export const subtractFromCart = (userId, productId) => {
+
+export const subtractFromCart = (productId) => {
   return async (dispatch, getState) => {
     try {
       const token = window.localStorage.getItem(TOKEN);
       const cart = getState().cart;
       if (token) {
         if (cart[productId].quantity === 1) {
-          dispatch(deleteFromCart(userId, productId));
+          dispatch(deleteFromCart(productId));
         } else {
           await axios.put(
-            `/api/cart/${userId}/${productId}`,
+            `/api/cart/products/${productId}`,
             { decrement: 1 },
             {
               headers: { authorization: token },
@@ -132,7 +130,7 @@ export const subtractFromCart = (userId, productId) => {
         }
       } else {
         if (cart[productId].quantity === 1) {
-          dispatch(deleteFromCart(userId, productId));
+          dispatch(deleteFromCart(productId));
         }
       }
       dispatch(subtractedItem(productId));
@@ -142,14 +140,13 @@ export const subtractFromCart = (userId, productId) => {
   };
 };
 
-export const clearCart = (userId) => {
+export const clearCart = () => {
   return async (dispatch, getState) => {
     try {
       const token = window.localStorage.getItem(TOKEN);
-      const cart = getState().cart;
       if (token) {
           await axios.put(
-            `/api/cart/purchase/${userId}`, null, 
+            `/api/cart/purchase`, null,
             {
               headers: { authorization: token },
             }

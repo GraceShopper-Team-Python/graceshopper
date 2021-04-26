@@ -8,7 +8,7 @@ import { me } from '../store/auth';
 class Cart extends React.Component {
   async componentDidMount() {
     await this.props.loadInitialData();
-    await this.props.fetchCart(this.props.auth.id);
+    await this.props.fetchCart();
   }
 
   render() {
@@ -25,14 +25,14 @@ class Cart extends React.Component {
                   <h4>Quantity: {products[product].quantity}</h4>
                   <button
                     onClick={() =>
-                      this.props.addToCart(this.props.auth.id, product)
+                      this.props.addToCart(product)
                     }
                   >
                     +
                   </button>
                   <button
                     onClick={() =>
-                      this.props.subtractFromCart(this.props.auth.id, product)
+                      this.props.subtractFromCart(product)
                     }
                   >
                     -
@@ -46,7 +46,7 @@ class Cart extends React.Component {
                   </h4>
                   <button
                     onClick={() =>
-                      this.props.deleteFromCart(this.props.auth.id, product)
+                      this.props.deleteFromCart(product)
                     }
                   >
                     Remove Item From Cart
@@ -73,14 +73,14 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => ({
   loadInitialData: () => dispatch(me()),
-  fetchCart: (userId) => dispatch(fetchCart(userId)),
-  addToCart: (userId, productId) => dispatch(addToCart(userId, productId)),
-  subtractFromCart: (userId, productId) =>
-    dispatch(subtractFromCart(userId, productId)),
-  deleteFromCart: (userId, productId) =>
-    dispatch(deleteFromCart(userId, productId)),
-  updateItem: (userId, productId, direction) =>
-    dispatch(updateItem(userId, productId, direction)),
+  fetchCart: () => dispatch(fetchCart()),
+  addToCart: (productId) => dispatch(addToCart(productId)),
+  subtractFromCart: (productId) =>
+    dispatch(subtractFromCart(productId)),
+  deleteFromCart: (productId) =>
+    dispatch(deleteFromCart(productId)),
+  updateItem: (productId, direction) =>
+    dispatch(updateItem(productId, direction)),
 });
 
 export default connect(mapState, mapDispatch)(Cart);

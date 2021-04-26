@@ -7,7 +7,7 @@ import { me } from "../store/auth";
 class Confirmation extends React.Component {
   async componentDidMount() {
     await this.props.loadInitialData();
-    await this.props.fetchCart(this.props.auth.id);
+    await this.props.fetchCart();
   }
 
   render() {
@@ -35,7 +35,7 @@ class Confirmation extends React.Component {
           ), 0).toFixed(2)
         }</h4>
         </div>
-        <Link onClick={()=> this.props.clearCart(this.props.auth.id)} to={"/checkout"}>Go to Checkout.</Link>
+        <Link onClick={()=> this.props.clearCart()} to={"/checkout"}>Go to Checkout.</Link>
       </div>
     );
   }
@@ -50,8 +50,8 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => ({
   loadInitialData: () => dispatch(me()),
-  fetchCart: (userId) => dispatch(fetchCart(userId)),
-  clearCart: (userId) => dispatch(clearCart(userId)),
+  fetchCart: () => dispatch(fetchCart()),
+  clearCart: () => dispatch(clearCart()),
 });
 
 export default connect(mapState, mapDispatch)(Confirmation);
