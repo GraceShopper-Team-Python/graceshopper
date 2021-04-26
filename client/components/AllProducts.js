@@ -1,7 +1,9 @@
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { fetchProducts } from "../store/products";
-import React, { Component } from "react";
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchProducts } from '../store/products';
+import React, { Component } from 'react';
+import Page from './Pagination';
+import Pagination from 'react-js-pagination';
 
 export class AllProducts extends Component {
   componentDidMount() {
@@ -22,6 +24,7 @@ export class AllProducts extends Component {
             </div>
           );
         })}
+        <Page />
       </div>
     );
   }
