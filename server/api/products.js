@@ -9,8 +9,8 @@ const { requireAdmin } = require('../auth/authMiddleware');
 router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll({
-      limit: 5,
-      offset: 0,
+      // limit: 5,
+      // offset: 0,
     });
     res.json(products);
   } catch (err) {

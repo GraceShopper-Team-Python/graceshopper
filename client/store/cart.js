@@ -142,6 +142,28 @@ export const subtractFromCart = (userId, productId) => {
   };
 };
 
+export const clearCart = (userId) => {
+  return async (dispatch, getState) => {
+    try {
+      const token = window.localStorage.getItem(TOKEN);
+      const cart = getState().cart;
+      if (token) {
+          await axios.put(
+            `/api/cart/purchase/${userId}`, null, 
+            {
+              headers: { authorization: token },
+            }
+          );
+      }
+      dispatch(setCart({}));
+    } catch (error) {
+      throw error;
+    }
+  };
+};
+
+
+
 export default function cartsReducer(state = initialState, action) {
   let newCart = { ...state };
   switch (action.type) {
