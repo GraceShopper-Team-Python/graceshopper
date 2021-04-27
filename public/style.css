@@ -99,7 +99,8 @@ nav a {
   background-position: center center;
 }
 .home {
-  height: calc(100vh - 100px);
+  height: calc(100vh);
+  overflow: hidden;
 }
 .home .info {
   z-index: 10;
