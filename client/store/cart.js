@@ -1,14 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 
-const TOKEN = 'token';
+const TOKEN = "token";
 
 const initialState = {};
 
 // action types
-const SET_CART = 'SET_CART';
-const DELETE_ITEM = 'DELETE_ITEM';
-const ADDED_ITEM = 'ADDED_ITEM';
-const SUBTRACTED_ITEM = 'SUBTRACTED_ITEM';
+const SET_CART = "SET_CART";
+const DELETE_ITEM = "DELETE_ITEM";
+const ADDED_ITEM = "ADDED_ITEM";
+const SUBTRACTED_ITEM = "SUBTRACTED_ITEM";
 
 //action creators
 export const setCart = (cartObj) => {
@@ -50,7 +50,7 @@ export const fetchCart = () => {
         });
         dispatch(setCart(cart));
       } else {
-        const cart = window.localStorage.getItem('cart');
+        const cart = window.localStorage.getItem("cart");
         dispatch(setCart(JSON.parse(cart)));
       }
     } catch (err) {
