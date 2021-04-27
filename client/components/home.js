@@ -7,34 +7,27 @@ import { snakeImages } from "../miscellany/SnakeImages";
 const snakeJokes = snakePuns[Math.floor(Math.random() * snakePuns.length)];
 const snakeSrc = snakeImages[Math.floor(Math.random() * snakeImages.length)];
 
-// const getSnakeImg = () => {
-//   let snakeImg;
-//   setInterval(() => {
-//     snakeImg = snakeImages[Math.floor(Math.random() * snakeImages.length)];
-//   }, 5000);
-//   return snakeImg;
-// };
-
 /**
  * COMPONENT
  */
 export const Home = (props) => {
   const { username } = props;
-  // const snakeImage = getSnakeImg();
   return (
     <div className="home">
       {username && <h3 className="welcome">Welcome, {username}</h3>}
-      <div className="intro flex">
-        <h2>Python Shopper</h2>
-        <h4>{snakeJokes}</h4>
-        <Link to="/products" className="btn">
-          View All Products
-        </Link>
-      </div>
       <div
-        className="images"
+        className="intro flex"
         style={{ backgroundImage: `url(${snakeSrc})` }}
-      ></div>
+      >
+        <div className="overlay"></div>
+        <div className="info">
+          <h2>Python Shopper</h2>
+          <h4>{snakeJokes}</h4>
+          <Link to="/products" className="btn">
+            View All Products
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };

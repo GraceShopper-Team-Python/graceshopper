@@ -11,20 +11,26 @@ export class AllProducts extends Component {
   render() {
     const products = this.props.products;
     return (
-      <div className="flex all-products">
-        {products.map((product) => {
-          return (
-            <div key={product.id} className="product">
-              <div className="image">
-                <img src={product.imageUrl} />
-              </div>
-              <div className="info">
-                <Link to={`/products/${product.id}`}>{product.name}</Link>
-                <p>${product.price.toFixed(2)}</p>
-              </div>
-            </div>
-          );
-        })}
+      <div className="all-products offset">
+        <div className="flex">
+          {products.map((product) => {
+            return (
+              <Link
+                to={`/products/${product.id}`}
+                key={product.id}
+                className="product"
+              >
+                <div className="image">
+                  <img src={product.imageUrl} />
+                </div>
+                <div className="info">
+                  <p>{product.name}</p>
+                  <p>${product.price.toFixed(2)}</p>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     );
   }
