@@ -84,7 +84,7 @@ nav a {
 }
 .welcome {
   text-transform: capitalize;
-  padding: 10px 50px;
+  padding: 65px 50px 10px 10px;
   background-color: #555555;
   color: #ffffff;
   font-weight: 100;
@@ -93,10 +93,13 @@ nav a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   z-index: -1;
   background-size: cover;
   background-position: center center;
+}
+.home {
+  height: calc(100vh - 100px);
 }
 .home .info {
   z-index: 10;
