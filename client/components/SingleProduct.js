@@ -1,21 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { me } from "../store";
-import { addToCart, fetchCart } from "../store/cart";
+import { addToCart } from "../store/cart";
 import { fetchProduct } from "../store/singleProduct";
 
 class SingleProduct extends React.Component {
   async componentDidMount() {
     const id = this.props.match.params.productId;
     this.props.fetchProduct(id);
-    await this.props.loadInitialData();
-    await this.props.fetchCart(this.props.auth.id);
   }
   render() {
     const { selectedProduct } = this.props;
     return (
-      <div className="single-product flex">
+      <div className="single-product flex offset">
         <div className="image">
           <img src={selectedProduct.imageUrl} />
         </div>
@@ -25,9 +22,8 @@ class SingleProduct extends React.Component {
           <h4>Description: </h4>
           <p>{selectedProduct.description}</p>
           <button
-            onClick={() =>
-              this.props.addToCart(this.props.auth.id, selectedProduct.id)
-            }
+            className="btn"
+            onClick={() => this.props.addToCart(selectedProduct.id)}
           >
             Add To Cart
           </button>
@@ -40,15 +36,11 @@ class SingleProduct extends React.Component {
 const mapState = (state) => ({
   selectedProduct: state.selectedProduct,
   cart: state.cart,
-  auth: state.auth,
 });
 
 const mapDispatch = (dispatch) => ({
   fetchProduct: (id) => dispatch(fetchProduct(id)),
-
-  addToCart: (userId, productId) => dispatch(addToCart(userId, productId)),
-  loadInitialData: () => dispatch(me()),
-  fetchCart: (userId) => dispatch(fetchCart(userId)),
+  addToCart: (productId) => dispatch(addToCart(productId)),
 });
 
 export default connect(mapState, mapDispatch)(SingleProduct);

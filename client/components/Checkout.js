@@ -1,5 +1,5 @@
-import React from 'react';
-import { snakePuns } from '../miscellany/jokes';
+import React from "react";
+import { snakePuns } from "../miscellany/jokes";
 
 const snakeJokes = snakePuns[Math.floor(Math.random() * snakePuns.length)];
 const snakeJokes1 = snakePuns[Math.floor(Math.random() * snakePuns.length)];
@@ -7,7 +7,7 @@ const snakeJokes2 = snakePuns[Math.floor(Math.random() * snakePuns.length)];
 
 export default function Checkout() {
   return (
-    <div>
+    <div className="offset">
       <h4>Checked Out 👀</h4>
       <h4>{snakeJokes}</h4>
       <h4>{snakeJokes1}</h4>

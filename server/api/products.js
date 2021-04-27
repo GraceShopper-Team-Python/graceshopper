@@ -3,7 +3,7 @@ const {
   models: { Product },
 } = require('../db');
 
-const { requireAdmin } = require('../auth/authMiddleware');
+const { requireToken, requireAdmin } = require('../auth/authMiddleware');
 
 // GET /api/products
 router.get('/', async (req, res, next) => {
@@ -30,10 +30,16 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // POST /api/products
-router.post('/', requireAdmin, async (req, res, next) => {
+router.post('/', requireToken, requireAdmin, async (req, res, next) => {
   try {
-    const newProduct = req.body;
-    const addedProduct = await Product.create(newProduct);
+    const { name, price, description, imageUrl, stock } = req.body;
+    const addedProduct = await Product.create({
+      name,
+      price,
+      description,
+      imageUrl,
+      stock,
+    });
     res.send(addedProduct);
   } catch (error) {
     next(error);
@@ -41,7 +47,7 @@ router.post('/', requireAdmin, async (req, res, next) => {
 });
 
 // PUT /api/products/:id
-router.put('/:id', requireAdmin, async (req, res, next) => {
+router.put('/:id', requireToken, requireAdmin, async (req, res, next) => {
   try {
     const { name, imageUrl, description, price, stock } = req.body;
     const product = await Product.findByPk(req.params.id);
@@ -58,7 +64,7 @@ router.put('/:id', requireAdmin, async (req, res, next) => {
 });
 
 // DELETE /api/products/:id
-router.delete('/:id', requireAdmin, async (req, res, next) => {
+router.delete('/:id', requireToken, requireAdmin, async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {

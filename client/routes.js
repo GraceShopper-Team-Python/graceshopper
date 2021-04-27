@@ -17,7 +17,7 @@ import Checkout from "./components/Checkout";
 class Routes extends Component {
   async componentDidMount() {
     await this.props.loadInitialData();
-    await this.props.fetchCart(this.props.auth.id);
+    await this.props.fetchCart();
   }
 
   render() {
@@ -62,7 +62,7 @@ const mapDispatch = (dispatch) => {
     loadInitialData() {
       dispatch(me());
     },
-    fetchCart: (userId) => dispatch(fetchCart(userId)),
+    fetchCart: () => dispatch(fetchCart()),
   };
 };
 

@@ -1,41 +1,52 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchCart, clearCart } from "../store/cart";
-import { me } from "../store/auth";
+import { clearCart } from "../store/cart";
 
 class Confirmation extends React.Component {
-  async componentDidMount() {
-    await this.props.loadInitialData();
-    await this.props.fetchCart(this.props.auth.id);
-  }
-
   render() {
     const products = this.props.cart;
-    console.log(this.props);
     return (
-      <div>
+      <div className="checkout">
+        <h2>Your Order:</h2>
         <div>
           {Object.keys(products).map((product) => (
-            <div key={product}>
+            <div className="flex checkout-item" key={product}>
               <h4>{products[product].name}</h4>
-              <h4>${Number(products[product].price / 100).toFixed(2)}</h4>
-              <h4>Quantity: {products[product].quantity}</h4>
-              <h4>
-                Quantity Total: $
+              <p>Quantity: {products[product].quantity}</p>
+              <p>Price: ${Number(products[product].price / 100).toFixed(2)}</p>
+              <p>
+                Item Total: $
                 {Number(
                   (products[product].price * products[product].quantity) / 100
                 ).toFixed(2)}
-              </h4>
+              </p>
             </div>
           ))}
-          <h4>SubTotal: ${Object.keys(products).reduce((accum, product) => (
-            accum + Number(((products[product].price * products[product].quantity) / 100
-                ))
-          ), 0).toFixed(2)
-        }</h4>
+          <div className="place-order">
+            <h3>
+              Order Total: $
+              {Object.keys(products)
+                .reduce(
+                  (accum, product) =>
+                    accum +
+                    Number(
+                      (products[product].price * products[product].quantity) /
+                        100
+                    ),
+                  0
+                )
+                .toFixed(2)}
+            </h3>
+            <Link
+              className="btn"
+              onClick={() => this.props.clearCart()}
+              to={"/checkout"}
+            >
+              Place Order
+            </Link>
+          </div>
         </div>
-        <Link onClick={()=> this.props.clearCart(this.props.auth.id)} to={"/checkout"}>Go to Checkout.</Link>
       </div>
     );
   }
@@ -44,14 +55,11 @@ class Confirmation extends React.Component {
 const mapState = (state) => {
   return {
     cart: state.cart,
-    auth: state.auth,
   };
 };
 
 const mapDispatch = (dispatch) => ({
-  loadInitialData: () => dispatch(me()),
-  fetchCart: (userId) => dispatch(fetchCart(userId)),
-  clearCart: (userId) => dispatch(clearCart(userId)),
+  clearCart: () => dispatch(clearCart()),
 });
 
 export default connect(mapState, mapDispatch)(Confirmation);
