@@ -1,45 +1,45 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { subtractFromCart, deleteFromCart, addToCart } from "../store/cart";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { subtractFromCart, deleteFromCart, addToCart } from '../store/cart';
 
 class Cart extends React.Component {
   render() {
     const products = this.props.cart;
     return (
-      <div className="cart">
+      <div className='cart'>
         {Object.keys(products).length ? (
           <div>
             <div>
               <h2>Shopping Cart: </h2>
               {Object.keys(products).map((product) => (
-                <div key={product} className="cart-item flex">
-                  <div className="image">
+                <div key={product} className='cart-item flex'>
+                  <div className='image'>
                     <img src={products[product].imageUrl} />
                   </div>
-                  <div className="info">
-                    <div className="flex">
+                  <div className='info'>
+                    <div className='flex'>
                       <h4>{products[product].name}</h4>
                       <a
-                        className="qty-btn"
+                        className='qty-btn'
                         onClick={() => this.props.addToCart(product)}
                       >
                         +
                       </a>
                       <a
-                        className="qty-btn"
+                        className='qty-btn'
                         onClick={() => this.props.subtractFromCart(product)}
                       >
                         -
                       </a>
                       <a
-                        className="btn"
+                        className='btn'
                         onClick={() => this.props.deleteFromCart(product)}
                       >
                         Remove Item From Cart
                       </a>
                     </div>
-                    <div className="flex">
+                    <div className='flex'>
                       <p>Quantity: {products[product].quantity}</p>
                       <p>
                         Price: $
@@ -58,14 +58,14 @@ class Cart extends React.Component {
                 </div>
               ))}
             </div>
-            <Link className="btn" to={"/confirmation"}>
+            <Link className='btn' to={'/confirmation'}>
               Checkout
             </Link>
           </div>
         ) : (
-          <div className="empty">
+          <div className='empty'>
             <h2>Your Cart Is Empty</h2>
-            <Link className="btn" to={"/products"}>
+            <Link className='btn' to={'/products'}>
               Back To All Products
             </Link>
           </div>

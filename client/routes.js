@@ -1,23 +1,37 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withRouter, Route, Switch } from "react-router-dom";
-import { Login, Signup } from "./components/AuthForm";
-import Home from "./components/home";
-import SingleProduct from "./components/SingleProduct";
-import { me } from "./store";
-import AllProducts from "./components/AllProducts";
-import { fetchCart } from "./store/cart";
-import Confirmation from "./components/Confirmation";
-import Cart from "./components/Cart";
-import Checkout from "./components/Checkout";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter, Route, Switch } from 'react-router-dom';
+import { Login, Signup } from './components/AuthForm';
+import Home from './components/home';
+import SingleProduct from './components/SingleProduct';
+import { me } from './store';
+import AllProducts from './components/AllProducts';
+import { fetchCart } from './store/cart';
+import Confirmation from './components/Confirmation';
+import Cart from './components/Cart';
+import Checkout from './components/Checkout';
 
 /**
  * COMPONENT
  */
 class Routes extends Component {
+  constructor() {
+    super();
+    this.setCartToLocalStorage = this.setCartToLocalStorage.bind(this);
+  }
   async componentDidMount() {
     await this.props.loadInitialData();
     await this.props.fetchCart();
+    window.addEventListener('beforeunload', this.setCartToLocalStorage);
+  }
+
+  setCartToLocalStorage() {
+    localStorage.setItem('cart', JSON.stringify(this.props.cart));
+    window.removeEventListener('beforeunload', this.setCartToLocalStorage);
+  }
+
+  componentWillUnmount() {
+    this.setCartToLocalStorage();
   }
 
   render() {
@@ -27,18 +41,18 @@ class Routes extends Component {
       <div>
         {!isLoggedIn && (
           <Switch>
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
+            <Route path='/login' component={Login} />
+            <Route path='/signup' component={Signup} />
           </Switch>
         )}
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/home" component={Home} />
-          <Route path="/cart" component={Cart} />
-          <Route path="/confirmation" component={Confirmation} />
-          <Route path="/checkout" component={Checkout} />
-          <Route exact path="/products" component={AllProducts} />
-          <Route path="/products/:productId" component={SingleProduct} />
+          <Route path='/' exact component={Home} />
+          <Route path='/home' component={Home} />
+          <Route path='/cart' component={Cart} />
+          <Route path='/confirmation' component={Confirmation} />
+          <Route path='/checkout' component={Checkout} />
+          <Route exact path='/products' component={AllProducts} />
+          <Route path='/products/:productId' component={SingleProduct} />
         </Switch>
       </div>
     );
@@ -52,6 +66,7 @@ const mapState = (state) => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
+    cart: state.cart,
     isLoggedIn: !!state.auth.id,
     auth: state.auth,
   };

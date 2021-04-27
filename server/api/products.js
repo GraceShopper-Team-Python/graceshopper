@@ -8,7 +8,10 @@ const { requireToken, requireAdmin } = require('../auth/authMiddleware');
 // GET /api/products
 router.get('/', async (req, res, next) => {
   try {
-    const products = await Product.findAll();
+    const products = await Product.findAll({
+      // limit: 5,
+      // offset: 0,
+    });
     res.json(products);
   } catch (err) {
     next(err);
