@@ -16,9 +16,23 @@ import OrderHistory from "./components/OrderHistory";
  * COMPONENT
  */
 class Routes extends Component {
+  constructor() {
+    super();
+    this.setCartToLocalStorage = this.setCartToLocalStorage.bind(this);
+  }
   async componentDidMount() {
     await this.props.loadInitialData();
     await this.props.fetchCart();
+    window.addEventListener('beforeunload', this.setCartToLocalStorage);
+  }
+
+  setCartToLocalStorage() {
+    localStorage.setItem('cart', JSON.stringify(this.props.cart));
+    window.removeEventListener('beforeunload', this.setCartToLocalStorage);
+  }
+
+  componentWillUnmount() {
+    this.setCartToLocalStorage();
   }
 
   render() {
@@ -28,11 +42,12 @@ class Routes extends Component {
       <div>
         {!isLoggedIn && (
           <Switch>
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
+            <Route path='/login' component={Login} />
+            <Route path='/signup' component={Signup} />
           </Switch>
         )}
         <Switch>
+<<<<<<< HEAD
           <Route path="/" exact component={Home} />
           <Route path="/home" component={Home} />
           <Route path="/cart" component={Cart} />
@@ -41,6 +56,15 @@ class Routes extends Component {
           <Route path='/orders' component={OrderHistory} />
           <Route exact path="/products" component={AllProducts} />
           <Route path="/products/:productId" component={SingleProduct} />
+=======
+          <Route path='/' exact component={Home} />
+          <Route path='/home' component={Home} />
+          <Route path='/cart' component={Cart} />
+          <Route path='/confirmation' component={Confirmation} />
+          <Route path='/checkout' component={Checkout} />
+          <Route exact path='/products' component={AllProducts} />
+          <Route path='/products/:productId' component={SingleProduct} />
+>>>>>>> 1cd64318c2a524f842eafd44e5cee4ab649aee4b
         </Switch>
       </div>
     );
@@ -54,6 +78,7 @@ const mapState = (state) => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
+    cart: state.cart,
     isLoggedIn: !!state.auth.id,
     auth: state.auth,
   };

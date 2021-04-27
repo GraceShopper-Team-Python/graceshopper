@@ -21,7 +21,7 @@ img {
   height: auto;
 }
 .offset {
-  padding-top: 60px;
+  padding-top: 100px;
 }
 /*--- TEXT ---*/
 p {
@@ -84,7 +84,7 @@ nav a {
 }
 .welcome {
   text-transform: capitalize;
-  padding: 10px 50px;
+  padding: 65px 50px 10px 10px;
   background-color: #555555;
   color: #ffffff;
   font-weight: 100;
@@ -93,10 +93,14 @@ nav a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 50px);
+  height: 100%;
   z-index: -1;
   background-size: cover;
   background-position: center center;
+}
+.home {
+  height: calc(100vh);
+  overflow: hidden;
 }
 .home .info {
   z-index: 10;
@@ -224,11 +228,10 @@ nav a {
 
 /*--- Cart ---*/
 .cart {
-  width: 95vw;
   margin: 0 auto;
   overflow: scroll;
-  padding-bottom: 50px;
-  padding-top: 100px;
+  padding: 100px 25px 50px 25px;
+  height: calc(100vh - 150px);
 }
 .cart .btn {
   margin-top: 10px;
@@ -275,9 +278,9 @@ nav a {
 
 /*--- Checkout ---*/
 .checkout {
-  width: 50vw;
+  height: calc(100vh - 100px);
   overflow: scroll;
-  padding: 200px 0px;
+  padding: 100px 50px 0px 50px;
   margin: 0 auto;
 }
 .checkout .btn {
@@ -299,6 +302,24 @@ nav a {
   padding-top: 25px;
 }
 
+/*-- Confirmation ---*/
+.confirmation {
+  height: calc(100vh - 100px);
+}
+.confirmation > div {
+  padding: 0px 50px;
+  text-align: center;
+}
+.confirmation h4,
+.confirmation h2 {
+  margin-bottom: 20px;
+}
+.gif {
+  height: 500px;
+  width: auto;
+  max-width: 100%;
+}
+
 /*--- Media Queries ---*/
 @media screen and (max-width: 1200px) {
   .checkout.offset {
@@ -308,9 +329,6 @@ nav a {
 }
 
 @media screen and (max-width: 855px) {
-  .offset {
-    padding-top: 100px;
-  }
   .header {
     flex-direction: column;
   }
