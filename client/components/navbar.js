@@ -3,9 +3,8 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
 
-
 const Navbar = ({ handleClick, isLoggedIn }) => (
-  <div>
+  <div className="flex header">
     <h1>Python Shopper</h1>
     <nav>
       {isLoggedIn ? (
@@ -30,7 +29,6 @@ const Navbar = ({ handleClick, isLoggedIn }) => (
         </div>
       )}
     </nav>
-    <hr />
   </div>
 );
 

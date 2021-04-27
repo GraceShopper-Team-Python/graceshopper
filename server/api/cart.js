@@ -2,20 +2,34 @@ const router = require('express').Router();
 const {
   models: { Order, OrderProduct, Product },
 } = require('../db');
-const { requireToken } = require('../auth/authMiddleware');
 
-// GET /api/cart/:userId
-router.get('/:userId', requireToken, async (req, res, next) => {
+
+router.put("/purchase", async (req, res, next) => {
   try {
     const cartOrder = await Order.findOne({
       where: {
-        userId: req.params.userId,
+        userId: req.user.id,
+        isCart: true,
+      },
+    });
+    const updated = await cartOrder.update({ isCart: false });
+    res.send(updated);
+  } catch (e) {
+    next(e);
+  }
+});
+// GET /api/cart/
+router.get('/',  async (req, res, next) => {
+  try {
+    const cartOrder = await Order.findOne({
+      where: {
+        userId: req.user.id,
         isCart: true,
       },
       include: [{ model: Product }],
     });
-
-    let userCart = {};
+    if (cartOrder) {
+      let userCart = {};
     cartOrder.products.map((product) => {
       userCart[product.id] = {
         quantity: product.orderProduct.quantity,
@@ -25,17 +39,21 @@ router.get('/:userId', requireToken, async (req, res, next) => {
         imageUrl: product.imageUrl,
       };
     });
-
     res.send(userCart);
+    } else {
+      const order = await Order.create();
+      await req.user.addOrder(order);
+      res.send({});
+    }
+
   } catch (error) {
     next(error);
   }
 });
 
-//Make put route for updating isCart to false
 
-// POST /api/cart/:userId/:productId
-router.post('/:userId/:productId', requireToken, async (req, res, next) => {
+// POST /api/cart/products/:productId
+router.post('/products/:productId', async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -45,37 +63,17 @@ router.post('/:userId/:productId', requireToken, async (req, res, next) => {
     if (product) {
       const cartOrder = await Order.findOne({
         where: {
-          userId: req.params.userId,
+          userId: req.user.id,
           isCart: true,
         },
       });
 
-      await cartOrder.addProduct(req.params.productId);
+      await cartOrder.addProduct(req.params.productId, { through: { productPrice: product.price }});
 
-      let cartProduct = await OrderProduct.findOne({
-        where: {
-          productId: req.params.productId,
-          orderId: cartOrder.id,
-        },
-      });
-      cartProduct.productPrice = product.price;
-      await cartProduct.save();
+
 
       res.send(product);
-      // if (cartProduct) {
-      //   await cartProduct.increment("quantity", { by: 1 });
-      // } else {
-      //   await cartOrder.addProduct(req.params.productId);
-      //   cartProduct = await OrderProduct.findOne({
-      //     where: {
-      //       productId: req.params.productId,
-      //       orderId: cartOrder.id,
-      //     },
-      //   });
-      //   cartProduct.productPrice = product.price;
-      //   await cartProduct.save();
-      //   res.send(cartProduct);
-      //}
+
 
     } else {
       throw new Error('Product Does Not Exist');
@@ -85,8 +83,8 @@ router.post('/:userId/:productId', requireToken, async (req, res, next) => {
   }
 });
 
-//delete /api/cart/:userId/:productId
-router.delete('/:userId/:productId', requireToken, async (req, res, next) => {
+//delete /api/cart/products/:productId
+router.delete('/products/:productId', async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -96,10 +94,11 @@ router.delete('/:userId/:productId', requireToken, async (req, res, next) => {
     if (product) {
       const cartOrder = await Order.findOne({
         where: {
-          userId: req.params.userId,
+          userId: req.user.id,
           isCart: true,
         },
       });
+      //TODO  cartOrder.removeProduct(product);
       let cartProduct = await OrderProduct.findOne({
         where: {
           productId: req.params.productId,
@@ -120,17 +119,17 @@ router.delete('/:userId/:productId', requireToken, async (req, res, next) => {
   }
 });
 
-// PUT /api/cart/:userId/:productId
-router.put('/:userId/:productId', requireToken, async (req, res, next) => {
+// PUT /api/cart/products/:productId
+router.put('/products/:productId', async (req, res, next) => {
   try {
-     const product = await Product.findOne({
-       where: {
-         id: req.params.productId,
-       },
-     });
+    const product = await Product.findOne({
+      where: {
+        id: req.params.productId,
+      },
+    });
     const cartOrder = await Order.findOne({
       where: {
-        userId: req.params.userId,
+        userId: req.user.id,
         isCart: true,
       },
     });
@@ -158,5 +157,7 @@ router.put('/:userId/:productId', requireToken, async (req, res, next) => {
     next(error);
   }
 });
+
+
 
 module.exports = router;

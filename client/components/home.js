@@ -1,24 +1,40 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { snakePuns } from '../miscellany/jokes';
-import { snakeImages } from '../miscellany/SnakeImages';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { snakePuns } from "../miscellany/jokes";
+import { snakeImages } from "../miscellany/SnakeImages";
 
 const snakeJokes = snakePuns[Math.floor(Math.random() * snakePuns.length)];
 const snakeSrc = snakeImages[Math.floor(Math.random() * snakeImages.length)];
-const snakeSrc1 = snakeImages[Math.floor(Math.random() * snakeImages.length)];
+
+// const getSnakeImg = () => {
+//   let snakeImg;
+//   setInterval(() => {
+//     snakeImg = snakeImages[Math.floor(Math.random() * snakeImages.length)];
+//   }, 5000);
+//   return snakeImg;
+// };
 
 /**
  * COMPONENT
  */
 export const Home = (props) => {
   const { username } = props;
-
+  // const snakeImage = getSnakeImg();
   return (
-    <div>
-      {username ? <h3>Welcome, {username}</h3> : <h3>Welcome</h3>}
-      <h5>{snakeJokes}</h5>
-      <img src={snakeSrc} />
-      <img src={snakeSrc1} />
+    <div className="home">
+      {username && <h3 className="welcome">Welcome, {username}</h3>}
+      <div className="intro flex">
+        <h2>Python Shopper</h2>
+        <h4>{snakeJokes}</h4>
+        <Link to="/products" className="btn">
+          View All Products
+        </Link>
+      </div>
+      <div
+        className="images"
+        style={{ backgroundImage: `url(${snakeSrc})` }}
+      ></div>
     </div>
   );
 };

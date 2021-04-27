@@ -1,18 +1,12 @@
 const {
   models: { User },
-} = require("../db");
+} = require('../db');
 
 const requireToken = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     req.user = await User.findByToken(token);
-    if (req.user.id === Number(req.params.userId)) {
-      next();
-    } else {
-      let error = new Error("Unauthorized User");
-      error.status = 403;
-      throw error;
-    }
+    next();
   } catch (error) {
     next(error);
   }
@@ -20,13 +14,10 @@ const requireToken = async (req, res, next) => {
 
 const requireAdmin = async (req, res, next) => {
   try {
-    const token = req.headers.authorization;
-    const user = await User.findByToken(token);
-    if (user.isAdmin) {
-      req.user = user;
+    if (req.user.isAdmin) {
       next();
     } else {
-      const error = new Error("Permission Denied");
+      const error = new Error('Permission Denied');
       error.status = 403;
       throw error;
     }

@@ -1,12 +1,12 @@
-const router = require("express").Router();
+const router = require('express').Router();
 const {
   models: { Product },
-} = require("../db");
+} = require('../db');
 
-const { requireAdmin } = require("../auth/authMiddleware");
+const { requireToken, requireAdmin } = require('../auth/authMiddleware');
 
 // GET /api/products
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll();
     res.json(products);
@@ -16,21 +16,27 @@ router.get("/", async (req, res, next) => {
 });
 
 // GET /api/products/:id
-router.get("/:id", async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (product) res.send(product);
-    else throw new Error("Product not found!");
+    else throw new Error('Product not found!');
   } catch (e) {
     next(e);
   }
 });
 
 // POST /api/products
-router.post("/", requireAdmin, async (req, res, next) => {
+router.post('/', requireToken, requireAdmin, async (req, res, next) => {
   try {
-    const newProduct = req.body;
-    const addedProduct = await Product.create(newProduct);
+    const { name, price, description, imageUrl, stock } = req.body;
+    const addedProduct = await Product.create({
+      name,
+      price,
+      description,
+      imageUrl,
+      stock,
+    });
     res.send(addedProduct);
   } catch (error) {
     next(error);
@@ -38,7 +44,7 @@ router.post("/", requireAdmin, async (req, res, next) => {
 });
 
 // PUT /api/products/:id
-router.put("/:id", requireAdmin, async (req, res, next) => {
+router.put('/:id', requireToken, requireAdmin, async (req, res, next) => {
   try {
     const { name, imageUrl, description, price, stock } = req.body;
     const product = await Product.findByPk(req.params.id);
@@ -55,7 +61,7 @@ router.put("/:id", requireAdmin, async (req, res, next) => {
 });
 
 // DELETE /api/products/:id
-router.delete("/:id", requireAdmin, async (req, res, next) => {
+router.delete('/:id', requireToken, requireAdmin, async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -64,9 +70,9 @@ router.delete("/:id", requireAdmin, async (req, res, next) => {
     });
     if (product) {
       await product.destroy();
-      res.status(200).send("Successfully Deleted");
+      res.status(200).send('Successfully Deleted');
     } else {
-      const error = new Error("Product not found");
+      const error = new Error('Product not found');
       error.status = 404;
       throw error;
     }

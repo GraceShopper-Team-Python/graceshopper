@@ -1,14 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchCart } from "../store/cart";
-import { me } from "../store/auth";
+import { clearCart } from "../store/cart";
+
 
 class Confirmation extends React.Component {
-  async componentDidMount() {
-    await this.props.loadInitialData();
-    await this.props.fetchCart(this.props.auth.id);
-  }
+
 
   render() {
     const products = this.props.cart;
@@ -35,7 +32,7 @@ class Confirmation extends React.Component {
           ), 0).toFixed(2)
         }</h4>
         </div>
-        <Link to={"/checkout"}>Go to Checkout.</Link>
+        <Link onClick={()=> this.props.clearCart()} to={"/checkout"}>Go to Checkout.</Link>
       </div>
     );
   }
@@ -44,13 +41,12 @@ class Confirmation extends React.Component {
 const mapState = (state) => {
   return {
     cart: state.cart,
-    auth: state.auth,
+
   };
 };
 
 const mapDispatch = (dispatch) => ({
-  loadInitialData: () => dispatch(me()),
-  fetchCart: (userId) => dispatch(fetchCart(userId)),
+  clearCart: () => dispatch(clearCart()),
 });
 
 export default connect(mapState, mapDispatch)(Confirmation);
