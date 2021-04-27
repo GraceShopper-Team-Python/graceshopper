@@ -1,8 +1,7 @@
-const router = require('express').Router();
+const router = require("express").Router();
 const {
   models: { Order, OrderProduct, Product },
-} = require('../db');
-
+} = require("../db");
 
 router.put("/purchase", async (req, res, next) => {
   try {
@@ -18,8 +17,9 @@ router.put("/purchase", async (req, res, next) => {
     next(e);
   }
 });
+
 // GET /api/cart/
-router.get('/',  async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const cartOrder = await Order.findOne({
       where: {
@@ -30,30 +30,28 @@ router.get('/',  async (req, res, next) => {
     });
     if (cartOrder) {
       let userCart = {};
-    cartOrder.products.map((product) => {
-      userCart[product.id] = {
-        quantity: product.orderProduct.quantity,
-        price: product.price,
-        name: product.name,
-        description: product.description,
-        imageUrl: product.imageUrl,
-      };
-    });
-    res.send(userCart);
+      cartOrder.products.map((product) => {
+        userCart[product.id] = {
+          quantity: product.orderProduct.quantity,
+          price: product.price,
+          name: product.name,
+          description: product.description,
+          imageUrl: product.imageUrl,
+        };
+      });
+      res.send(userCart);
     } else {
       const order = await Order.create();
       await req.user.addOrder(order);
       res.send({});
     }
-
   } catch (error) {
     next(error);
   }
 });
 
-
 // POST /api/cart/products/:productId
-router.post('/products/:productId', async (req, res, next) => {
+router.post("/products/:productId", async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -68,15 +66,13 @@ router.post('/products/:productId', async (req, res, next) => {
         },
       });
 
-      await cartOrder.addProduct(req.params.productId, { through: { productPrice: product.price }});
-
-
+      await cartOrder.addProduct(req.params.productId, {
+        through: { productPrice: product.price },
+      });
 
       res.send(product);
-
-
     } else {
-      throw new Error('Product Does Not Exist');
+      throw new Error("Product Does Not Exist");
     }
   } catch (error) {
     next(error);
@@ -84,7 +80,7 @@ router.post('/products/:productId', async (req, res, next) => {
 });
 
 //delete /api/cart/products/:productId
-router.delete('/products/:productId', async (req, res, next) => {
+router.delete("/products/:productId", async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -120,7 +116,7 @@ router.delete('/products/:productId', async (req, res, next) => {
 });
 
 // PUT /api/cart/products/:productId
-router.put('/products/:productId', async (req, res, next) => {
+router.put("/products/:productId", async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
@@ -142,22 +138,20 @@ router.put('/products/:productId', async (req, res, next) => {
     });
 
     if (req.body.increment) {
-      await cartProduct.increment('quantity', { by: req.body.increment });
+      await cartProduct.increment("quantity", { by: req.body.increment });
     } else if (req.body.decrement) {
       if (cartProduct.quantity === 1) {
         await cartProduct.destroy({
           truncate: true,
         });
-        res.status(204).send('Removed from cart');
+        res.status(204).send("Removed from cart");
       }
-      await cartProduct.decrement('quantity', { by: req.body.decrement });
+      await cartProduct.decrement("quantity", { by: req.body.decrement });
     }
     res.send(product);
   } catch (error) {
     next(error);
   }
 });
-
-
 
 module.exports = router;
