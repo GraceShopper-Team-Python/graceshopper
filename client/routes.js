@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter, Route, Switch } from 'react-router-dom';
-import { Login, Signup } from './components/AuthForm';
-import Home from './components/home';
-import SingleProduct from './components/SingleProduct';
-import { me } from './store';
-import AllProducts from './components/AllProducts';
-import { fetchCart } from './store/cart';
-import Confirmation from './components/Confirmation';
-import Cart from './components/Cart';
-import Checkout from './components/Checkout';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter, Route, Switch } from "react-router-dom";
+import { Login, Signup } from "./components/AuthForm";
+import Home from "./components/home";
+import SingleProduct from "./components/SingleProduct";
+import { me } from "./store";
+import AllProducts from "./components/AllProducts";
+import { fetchCart } from "./store/cart";
+import Confirmation from "./components/Confirmation";
+import Cart from "./components/Cart";
+import Checkout from "./components/Checkout";
+import OrderHistory from "./components/OrderHistory";
 
 /**
  * COMPONENT
@@ -46,13 +47,14 @@ class Routes extends Component {
           </Switch>
         )}
         <Switch>
-          <Route path='/' exact component={Home} />
-          <Route path='/home' component={Home} />
-          <Route path='/cart' component={Cart} />
-          <Route path='/confirmation' component={Confirmation} />
-          <Route path='/checkout' component={Checkout} />
-          <Route exact path='/products' component={AllProducts} />
-          <Route path='/products/:productId' component={SingleProduct} />
+          <Route path="/" exact component={Home} />
+          <Route path="/home" component={Home} />
+          <Route path="/cart" component={Cart} />
+          <Route path="/confirmation" component={Confirmation} />
+          <Route path="/checkout" component={Checkout} />
+          <Route path='/orders' component={OrderHistory} />
+          <Route exact path="/products" component={AllProducts} />
+          <Route path="/products/:productId" component={SingleProduct} />
         </Switch>
       </div>
     );
