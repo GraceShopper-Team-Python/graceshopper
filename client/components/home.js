@@ -7,25 +7,11 @@ import { snakeImages } from "../miscellany/SnakeImages";
 const snakeJokes = snakePuns[Math.floor(Math.random() * snakePuns.length)];
 const snakeSrc = snakeImages[Math.floor(Math.random() * snakeImages.length)];
 
-// const getSnakeImg = () => {
-//   let snakeImg;
-//   setInterval(() => {
-//     snakeImg = snakeImages[Math.floor(Math.random() * snakeImages.length)];
-//   }, 5000);
-//   return snakeImg;
-// };
-
 /**
  * COMPONENT
  */
 export const Home = (props) => {
   const { username } = props;
-  // const snakeImage = setInterval(() => {
-  //   console.log("hello");
-  //   let image = snakeImages[Math.floor(Math.random() * snakeImages.length)];
-  //   console.log(image);
-  //   return image;
-  // }, 5000);
   return (
     <div className="home">
       {username && <h3 className="welcome">Welcome, {username}</h3>}
@@ -42,10 +28,6 @@ export const Home = (props) => {
           </Link>
         </div>
       </div>
-      {/* <div
-        className="images"
-        style={{ backgroundImage: `url(${snakeSrc})` }}
-      ></div> */}
     </div>
   );
 };
