@@ -21,7 +21,7 @@ img {
   height: auto;
 }
 .offset {
-  padding-top: 60px;
+  padding-top: 100px;
 }
 /*--- TEXT ---*/
 p {
@@ -227,7 +227,7 @@ nav a {
   margin: 0 auto;
   overflow: scroll;
   padding: 100px 25px 50px 25px;
-  height: 100vh;
+  height: calc(100vh - 150px);
 }
 .cart .btn {
   margin-top: 10px;
@@ -298,6 +298,24 @@ nav a {
   padding-top: 25px;
 }
 
+/*-- Confirmation ---*/
+.confirmation {
+  height: calc(100vh - 100px);
+}
+.confirmation > div {
+  padding: 0px 50px;
+  text-align: center;
+}
+.confirmation h4,
+.confirmation h2 {
+  margin-bottom: 20px;
+}
+.gif {
+  height: 500px;
+  width: auto;
+  max-width: 100%;
+}
+
 /*--- Media Queries ---*/
 @media screen and (max-width: 1200px) {
   .checkout.offset {
@@ -307,9 +325,6 @@ nav a {
 }
 
 @media screen and (max-width: 855px) {
-  .offset {
-    padding-top: 100px;
-  }
   .header {
     flex-direction: column;
   }
