@@ -47,7 +47,6 @@ class Routes extends Component {
           </Switch>
         )}
         <Switch>
-<<<<<<< HEAD
           <Route path="/" exact component={Home} />
           <Route path="/home" component={Home} />
           <Route path="/cart" component={Cart} />
@@ -56,15 +55,6 @@ class Routes extends Component {
           <Route path='/orders' component={OrderHistory} />
           <Route exact path="/products" component={AllProducts} />
           <Route path="/products/:productId" component={SingleProduct} />
-=======
-          <Route path='/' exact component={Home} />
-          <Route path='/home' component={Home} />
-          <Route path='/cart' component={Cart} />
-          <Route path='/confirmation' component={Confirmation} />
-          <Route path='/checkout' component={Checkout} />
-          <Route exact path='/products' component={AllProducts} />
-          <Route path='/products/:productId' component={SingleProduct} />
->>>>>>> 1cd64318c2a524f842eafd44e5cee4ab649aee4b
         </Switch>
       </div>
     );

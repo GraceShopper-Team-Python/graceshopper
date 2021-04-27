@@ -14,7 +14,7 @@ class OrderHistory extends React.Component {
     console.log(orders)
     return (
       <div className='offset'>
-        <h4>Order History:</h4>
+        <h3>Order History:</h3>
         { Object.keys(orders).length ?
         <div>
           { Object.keys(orders).map((order) => {
@@ -48,7 +48,10 @@ class OrderHistory extends React.Component {
           })}
         </div>
         :
+        <div>
+        <h4>No previous orders, enjoy a snake pun free of charge!</h4>
         <div>{snakeJokes}</div>
+        </div>
         }
 
       </div>
