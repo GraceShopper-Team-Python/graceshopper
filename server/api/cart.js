@@ -12,6 +12,8 @@ router.put("/purchase", async (req, res, next) => {
       },
     });
     const updated = await cartOrder.update({ isCart: false });
+    const newOrder = await Order.create();
+    await req.user.addOrder(newOrder);
     res.send(updated);
   } catch (e) {
     next(e);
