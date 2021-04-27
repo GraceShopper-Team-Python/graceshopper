@@ -8,8 +8,12 @@ import { authenticate } from "../store";
 const AuthForm = (props) => {
   const { name, displayName, handleSubmit, error, history } = props;
   return (
-    <div>
-      <form onSubmit={(evt) => handleSubmit(evt, history)} name={name}>
+    <div className="auth flex">
+      <form
+        onSubmit={(evt) => handleSubmit(evt, history)}
+        name={name}
+        className="form flex"
+      >
         <div>
           <label htmlFor="username">
             <small>Username</small>
