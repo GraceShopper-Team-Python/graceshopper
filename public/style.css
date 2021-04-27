@@ -4,7 +4,7 @@ body {
 }
 
 #app {
-  background-color: #E6D0A3;
+  background-color: rgba(156, 143, 120, 0.8);
   min-height: 100vh;
 }
 
@@ -318,6 +318,16 @@ nav a {
   height: 500px;
   width: auto;
   max-width: 100%;
+}
+.order {
+  border-bottom: 1px solid #000000;
+  margin-bottom: 20px;
+}
+.orders.checkout .checkout-item {
+  border-bottom: none;
+}
+.orders.checkout .checkout-item h4 {
+  margin: 10px 0px;
 }
 
 /*--- Media Queries ---*/
