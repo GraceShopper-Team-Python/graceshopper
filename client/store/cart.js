@@ -1,14 +1,14 @@
-import axios from "axios";
+import axios from 'axios';
 
-const TOKEN = "token";
+const TOKEN = 'token';
 
 const initialState = {};
 
 // action types
-const SET_CART = "SET_CART";
-const DELETE_ITEM = "DELETE_ITEM";
-const ADDED_ITEM = "ADDED_ITEM";
-const SUBTRACTED_ITEM = "SUBTRACTED_ITEM";
+const SET_CART = 'SET_CART';
+const DELETE_ITEM = 'DELETE_ITEM';
+const ADDED_ITEM = 'ADDED_ITEM';
+const SUBTRACTED_ITEM = 'SUBTRACTED_ITEM';
 
 //action creators
 export const setCart = (cartObj) => {
@@ -43,12 +43,15 @@ export const subtractedItem = (productId) => {
 export const fetchCart = () => {
   return async (dispatch) => {
     try {
-       const token = window.localStorage.getItem(TOKEN);
+      const token = window.localStorage.getItem(TOKEN);
       if (token) {
         const { data: cart } = await axios.get(`/api/cart`, {
           headers: { authorization: token },
         });
         dispatch(setCart(cart));
+      } else {
+        const cart = window.localStorage.getItem('cart');
+        dispatch(setCart(JSON.parse(cart)));
       }
     } catch (err) {
       throw err;
@@ -110,7 +113,6 @@ export const deleteFromCart = (productId) => {
   };
 };
 
-
 export const subtractFromCart = (productId) => {
   return async (dispatch, getState) => {
     try {
@@ -145,12 +147,9 @@ export const clearCart = () => {
     try {
       const token = window.localStorage.getItem(TOKEN);
       if (token) {
-          await axios.put(
-            `/api/cart/purchase`, null,
-            {
-              headers: { authorization: token },
-            }
-          );
+        await axios.put(`/api/cart/purchase`, null, {
+          headers: { authorization: token },
+        });
       }
       dispatch(setCart({}));
     } catch (error) {
@@ -158,8 +157,6 @@ export const clearCart = () => {
     }
   };
 };
-
-
 
 export default function cartsReducer(state = initialState, action) {
   let newCart = { ...state };
